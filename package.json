@@ -1,0 +1,10 @@
+{
+  "name": "seomarkup-structured-data-schema-inspector",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-only Chrome extension for Schema.org, SEO, social metadata, and tracking-tag inspection.",
+  "scripts": {
+    "check": "node --check extension/analyzer.js && node --check extension/popup.js && node --test tests/*.test.js",
+    "package": "rm -f dist/seomarkup-v0.1.0.zip public/downloads/seomarkup-v0.1.0.zip && cd extension && zip -qr ../dist/seomarkup-v0.1.0.zip . -x '*.DS_Store' && cp ../dist/seomarkup-v0.1.0.zip ../public/downloads/seomarkup-v0.1.0.zip"
+  }
+}

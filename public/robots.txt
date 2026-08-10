@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://schema.businesspress.io/sitemap.xml

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Representative structured data fixture</title>
+  <meta name="description" content="A local fixture for verifying SEOMarkup against rendered page markup without external network requests.">
+  <meta name="robots" content="index,follow">
+  <meta property="og:title" content="Representative structured data fixture">
+  <meta property="og:description" content="A safe local page for extension verification.">
+  <meta property="og:image" content="/fixtures/social.png">
+  <meta property="og:url" content="http://127.0.0.1:4189/tests/fixtures/representative-page.html">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="http://127.0.0.1:4189/tests/fixtures/representative-page.html">
+  <link rel="alternate" hreflang="lt" href="/lt/fixture">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "http://127.0.0.1:4189/tests/fixtures/representative-page.html#page",
+        "name": "Representative structured data fixture"
+      },
+      {
+        "@type": "Article",
+        "@id": "http://127.0.0.1:4189/tests/fixtures/representative-page.html#article",
+        "headline": "Representative structured data fixture"
+      }
+    ]
+  }
+  </script>
+  <script>
+    window.plausible = window.plausible || function () {
+      (window.plausible.q = window.plausible.q || []).push(arguments);
+    };
+    window._linkedin_partner_id = 'local-fixture';
+  </script>
+</head>
+<body>
+  <main itemscope itemtype="https://schema.org/Article">
+    <h1 itemprop="headline">Representative structured data fixture</h1>
+    <h2>Rendered evidence</h2>
+    <p itemprop="description">This page exists only for local analyzer verification.</p>
+    <img alt="An abstract structured-data diagram" width="320" height="180">
+  </main>
+  <script src="/extension/analyzer.js"></script>
+  <output id="scan-result" hidden></output>
+  <script>
+    document.getElementById('scan-result').textContent = JSON.stringify(
+      window.SEOMarkupAnalyzer.scanPage(document, performance)
+    );
+  </script>
+</body>
+</html>

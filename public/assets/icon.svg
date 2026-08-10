@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">SEOMarkup icon</title>
+  <desc id="desc">White structured-data brackets and an inspection point on a blue tile</desc>
+  <rect width="128" height="128" rx="26" fill="#1447e6"/>
+  <path d="M49 28H39c-8 0-13 5-13 13v10c0 8-4 12-11 13 7 1 11 5 11 13v10c0 8 5 13 13 13h10" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+  <path d="M79 28h10c8 0 13 5 13 13v10c0 8 4 12 11 13-7 1-11 5-11 13v10c0 8-5 13-13 13H79" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="64" cy="64" r="13" fill="#a9c4ff"/>
+  <circle cx="64" cy="64" r="6" fill="#0b1f4f"/>
+</svg>
