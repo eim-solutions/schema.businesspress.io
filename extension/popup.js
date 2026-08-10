@@ -241,23 +241,21 @@ function renderFieldsPanel(panelElement, heading, description, fields) {
 
 function renderSocial(report) {
   const panel = resetPanel(panels.social);
-  const graph = report.social.openGraph;
-  const previewBlock = sectionBlock('Share preview', 'No remote image is loaded by the extension');
-  const preview = create('article', 'social-preview');
-  const image = create('div', 'social-image-placeholder');
-  image.append(
-    create('strong', '', graph.image ? 'Image declared' : 'No Open Graph image'),
-    create('span', '', graph.image || 'Add og:image to control the visual share card'),
-  );
-  const copy = create('div', 'social-preview-copy');
-  const url = parseUrl(graph.url || report.page.url);
-  copy.append(
-    create('small', '', graph.siteName || (url ? url.hostname : 'Share preview')),
-    create('h3', '', graph.title || report.page.title),
-    create('p', '', graph.description || 'No Open Graph description is declared.'),
-  );
-  preview.append(image, copy);
-  previewBlock.append(preview);
+  const previews = report.social.previews || [];
+  const previewBlock = sectionBlock('Share previews', 'Approximate previews from the current page. Platforms may crop or rewrite them.');
+  const grid = create('div', 'social-preview-grid');
+  previews.forEach((preview) => grid.append(createSocialPreview(preview, report.page.url)));
+
+  if (previews.some((preview) => safePreviewImageUrl(preview.image))) {
+    const controls = create('div', 'social-load-control');
+    controls.append(create('p', '', 'Images stay blocked until you choose to load them. Chrome requests only the listed image URLs directly. SEOMarkup receives nothing.'));
+    const loadButton = create('button', 'button button-secondary', 'Load preview images');
+    loadButton.type = 'button';
+    loadButton.addEventListener('click', () => loadPreviewImages(grid, loadButton));
+    controls.append(loadButton);
+    previewBlock.append(controls);
+  }
+  previewBlock.append(grid);
   panel.append(previewBlock);
 
   const tagsBlock = sectionBlock('Declared social tags', 'Open Graph and X/Twitter card values');
@@ -265,6 +263,68 @@ function renderSocial(report) {
   report.social.fields.forEach((item) => list.append(createFieldRow(item.label, item.value, item.status, item.note)));
   tagsBlock.append(list);
   panel.append(tagsBlock);
+}
+
+function createSocialPreview(preview, pageUrl) {
+  const compactX = preview.id === 'x' && preview.card === 'summary';
+  const card = create('article', `social-card social-${preview.id}${compactX ? ' social-compact' : ''}`);
+  card.setAttribute('aria-label', `${preview.label} preview`);
+  card.append(create('h3', 'social-platform', preview.label));
+
+  if (preview.id !== 'google') {
+    const media = create('div', 'social-media');
+    const imageUrl = safePreviewImageUrl(preview.image);
+    media.dataset.imageUrl = imageUrl;
+    media.dataset.imageAlt = preview.imageAlt || `${preview.label} share image`;
+    media.append(
+      create('strong', '', imageUrl ? 'Image declared — not loaded' : 'No image declared'),
+      create('span', '', imageUrl || 'Add an image tag to control this preview.'),
+    );
+    card.append(media);
+  }
+
+  const copy = create('div', 'social-card-copy');
+  const url = parseUrl(preview.url || pageUrl);
+  if (preview.id === 'google') {
+    copy.append(
+      create('span', 'google-site', preview.siteName || (url ? url.hostname : 'Website')),
+      create('span', 'google-url', preview.url || pageUrl),
+      create('p', 'social-preview-title', preview.title || '(Untitled page)'),
+      create('p', '', preview.description || 'No meta description is declared.'),
+    );
+  } else {
+    copy.append(
+      create('small', '', preview.siteName || (url ? url.hostname : 'Share preview')),
+      create('p', 'social-preview-title', preview.title || '(Untitled page)'),
+      create('p', '', preview.description || 'No social description is declared.'),
+    );
+  }
+  card.append(copy);
+  return card;
+}
+
+function loadPreviewImages(grid, loadButton) {
+  grid.querySelectorAll('.social-media[data-image-url]').forEach((media) => {
+    const imageUrl = media.dataset.imageUrl;
+    if (!imageUrl) return;
+    const image = document.createElement('img');
+    image.alt = media.dataset.imageAlt || 'Declared social preview image';
+    image.referrerPolicy = 'no-referrer';
+    image.addEventListener('load', () => media.classList.add('loaded'), { once: true });
+    image.addEventListener('error', () => {
+      media.replaceChildren(create('strong', '', 'Image could not be loaded'), create('span', '', imageUrl));
+      media.classList.add('failed');
+    }, { once: true });
+    media.replaceChildren(image);
+    image.src = imageUrl;
+  });
+  loadButton.disabled = true;
+  loadButton.textContent = 'Images requested';
+}
+
+function safePreviewImageUrl(value) {
+  const url = parseUrl(value);
+  return url && ['http:', 'https:'].includes(url.protocol) ? url.href : '';
 }
 
 function renderTracking(report) {
@@ -471,6 +531,12 @@ function createDemoReport() {
     social: {
       openGraph: { title: 'Practical schema markup guide', description: 'Inspect structured data, SEO, and social metadata safely.', image: 'https://example.com/social/schema-guide.png', imageAlt: '', url: 'https://example.com/guides/schema-markup', type: 'article', siteName: 'Example Publishing' },
       twitter: { card: 'summary_large_image', title: '', description: '', image: '', imageAlt: '', site: '', creator: '' },
+      previews: [
+        { id: 'google', label: 'Google', title: 'Practical schema markup guide for publishers', description: 'Learn how to add and verify structured data without exposing page information to third-party browser extensions.', url: 'https://example.com/guides/schema-markup', siteName: 'Example Publishing', image: '', imageAlt: '', card: 'search-result' },
+        { id: 'facebook', label: 'Facebook', title: 'Practical schema markup guide', description: 'Inspect structured data, SEO, and social metadata safely.', url: 'https://example.com/guides/schema-markup', siteName: 'Example Publishing', image: 'https://example.com/social/schema-guide.png', imageAlt: '', card: 'summary-large-image' },
+        { id: 'x', label: 'X / Twitter', title: 'Practical schema markup guide', description: 'Inspect structured data, SEO, and social metadata safely.', url: 'https://example.com/guides/schema-markup', siteName: 'example.com', image: 'https://example.com/social/schema-guide.png', imageAlt: '', card: 'summary_large_image' },
+        { id: 'linkedin', label: 'LinkedIn', title: 'Practical schema markup guide', description: 'Inspect structured data, SEO, and social metadata safely.', url: 'https://example.com/guides/schema-markup', siteName: 'Example Publishing', image: 'https://example.com/social/schema-guide.png', imageAlt: '', card: 'summary-large-image' },
+      ],
       fields: socialFields,
       issues: issues.filter((item) => item.area === 'Social'),
     },

@@ -67,6 +67,11 @@ test('web inspector renders with safe DOM APIs and sends URL by POST', () => {
   assert.match(inspector, /body: JSON\.stringify\(\{ url: submittedUrl \}\)/);
   assert.match(inspector, /new DOMParser\(\)/);
   assert.match(inspector, /textContent =/);
+  assert.match(inspector, /'google'.*'facebook'.*'x'.*'linkedin'|preview\.id/s);
+  assert.match(inspector, /Load preview images/);
+  assert.match(inspector, /referrerPolicy = 'no-referrer'/);
+  assert.match(inspector, /preview\.card === 'summary'/);
+  assert.match(inspector, /Image declared — not loaded/);
   assert.doesNotMatch(inspector, /\.innerHTML\s*=|\beval\s*\(|new Function/);
 });
 

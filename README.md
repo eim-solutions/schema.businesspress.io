@@ -17,7 +17,7 @@ The interface separates direct evidence from guidance: parsing failures are erro
 - JSON-LD syntax, `@context`, `@type`, nested types, `@id`, and duplicate identifiers
 - Microdata and RDFa item types and property counts
 - Page title, meta description, canonical, robots, viewport, language, headings, image alt coverage, and hreflang
-- Open Graph and X/Twitter card metadata, including image-alt fields
+- Google, Facebook, X/Twitter, and LinkedIn previews from declared metadata, including image-alt fields
 - Common analytics, advertising, session-replay, consent, and monitoring tags with concrete on-page evidence
 - Copyable summaries and user-triggered local JSON exports
 
@@ -25,7 +25,7 @@ SEOMarkup reports what exists in the rendered page. It does not claim search-eng
 
 ## Browser URL reports
 
-The landing page accepts one public URL and returns a source-only report in the current browser tab. The endpoint fetches up to 2 MB of HTML, follows only validated public redirects, blocks private/reserved networks and non-standard ports, and does not retain scan history. It does not execute page JavaScript or load linked assets, so rendered DOM and runtime tracker evidence still require the extension.
+The landing page accepts one public URL and returns a source-only report in the current browser tab. The endpoint fetches up to 2 MB of HTML, follows only validated public redirects, blocks private/reserved networks and non-standard ports, and does not retain scan history. It does not execute page JavaScript or automatically load linked assets. Social preview images load only after an explicit click, directly from their source with no referrer. Rendered DOM and runtime tracker evidence still require the extension.
 
 ## Privacy and permissions
 
@@ -36,7 +36,7 @@ The manifest requests only:
 | `activeTab` | Inspect the page only after the toolbar button is clicked |
 | `scripting` | Run the bundled local scanner in that active tab |
 
-There are no host permissions, background workers, analytics, accounts, API calls, or saved scan history. See [PRIVACY.md](PRIVACY.md).
+There are no host permissions, background workers, analytics, accounts, remote analysis APIs, or saved scan history. Declared social preview images load only after an explicit click. See [PRIVACY.md](PRIVACY.md).
 
 ## Install locally
 

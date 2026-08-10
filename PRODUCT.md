@@ -17,6 +17,7 @@ SEOMarkup reports direct rendered-page evidence and clearly separates errors, wa
 - Runs only after the toolbar button is clicked.
 - Requests only `activeTab` and `scripting`.
 - Has no host permissions, accounts, analytics, saved history, or remote API.
+- Loads declared social preview images only after an explicit click, directly from their source with no referrer.
 - Redacts tracking query values in the UI and exports only after an explicit user action.
 
 ## Website inspection boundary
@@ -24,7 +25,7 @@ SEOMarkup reports direct rendered-page evidence and clearly separates errors, wa
 - Accepts one user-submitted public HTTP or HTTPS page over POST.
 - Fetches source HTML once, returns it to the active browser tab for analysis, and keeps no application scan history.
 - Blocks private, reserved, local, authenticated, non-standard-port, oversized, and unsafe redirect targets.
-- Does not run the target page's JavaScript, load its linked assets, or claim to show the rendered DOM.
+- Does not run the target page's JavaScript or automatically load linked assets. Declared social preview images load only after an explicit click.
 - Clearly directs users to the extension when page data must stay entirely local.
 
 ## Public site

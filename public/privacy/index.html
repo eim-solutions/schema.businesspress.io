@@ -24,7 +24,7 @@
   </header>
 
   <main id="main" class="policy-shell">
-    <p class="eyebrow">Privacy policy · Effective 10 August 2026</p>
+    <p class="eyebrow">Privacy policy · Effective 11 August 2026</p>
     <h1>Choose the privacy boundary you need.</h1>
     <p class="policy-lede">The Chrome extension keeps inspection entirely local. The website offers a separate source-only report that sends one submitted public URL to the BusinessPress server for a one-time fetch.</p>
 
@@ -35,6 +35,7 @@
         <li>No scan history is stored.</li>
         <li>No page content is uploaded or transmitted.</li>
         <li>No accounts, advertising identifiers, analytics events, or telemetry are used.</li>
+        <li>Preview images stay blocked unless you choose to load them. Chrome requests only the declared image URLs directly, without a referrer.</li>
         <li>Clipboard and JSON export actions happen only after you explicitly select them.</li>
       </ul>
     </section>
@@ -51,7 +52,8 @@
         <li>The server fetches that page's source HTML and returns it to the active browser tab for analysis.</li>
         <li>SEOMarkup does not create an account, scan-history record, or saved report.</li>
         <li>Private-network addresses, login details, non-standard ports, oversized pages, and unsafe redirects are blocked.</li>
-        <li>The website does not execute the target page's JavaScript or load its linked assets.</li>
+        <li>The website does not execute the target page's JavaScript or automatically load linked assets.</li>
+        <li>Declared social preview images load only after you explicitly choose to load them, directly from their source without a referrer.</li>
       </ul>
       <p>Standard infrastructure logs may temporarily record technical request details such as IP address, the SEOMarkup endpoint path, browser user agent, response status, and timestamp for security and reliable delivery. The target URL is submitted in the request body rather than the endpoint path.</p>
     </section>

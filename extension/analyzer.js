@@ -451,6 +451,66 @@
       site: get('twitter:site'),
       creator: get('twitter:creator'),
     };
+    const pageTitle = cleanText(snapshot.titleElements[0] || snapshot.documentTitle) || '(Untitled page)';
+    const pageDescription = get('description');
+    const canonicalLink = getLinks(snapshot, 'canonical')[0];
+    const pageUrl = resolveUrl(canonicalLink && canonicalLink.href, snapshot.url) || safePageUrl(snapshot.url);
+    let hostname = '';
+    try { hostname = new URL(pageUrl).hostname; } catch { hostname = cleanText(pageUrl); }
+    const openGraphTitle = openGraph.title || pageTitle;
+    const openGraphDescription = openGraph.description || pageDescription;
+    const openGraphUrl = openGraph.url || pageUrl;
+    const socialSiteName = openGraph.siteName || hostname;
+    const twitterTitle = twitter.title || openGraphTitle;
+    const twitterDescription = twitter.description || openGraphDescription;
+    const twitterImage = twitter.image || openGraph.image;
+    const twitterImageAlt = twitter.imageAlt || openGraph.imageAlt;
+    const previews = [
+      {
+        id: 'google',
+        label: 'Google',
+        title: pageTitle,
+        description: pageDescription,
+        url: pageUrl,
+        siteName: socialSiteName,
+        image: '',
+        imageAlt: '',
+        card: 'search-result',
+      },
+      {
+        id: 'facebook',
+        label: 'Facebook',
+        title: openGraphTitle,
+        description: openGraphDescription,
+        url: openGraphUrl,
+        siteName: socialSiteName,
+        image: openGraph.image,
+        imageAlt: openGraph.imageAlt,
+        card: 'summary-large-image',
+      },
+      {
+        id: 'x',
+        label: 'X / Twitter',
+        title: twitterTitle,
+        description: twitterDescription,
+        url: openGraphUrl,
+        siteName: twitter.site || hostname,
+        image: twitterImage,
+        imageAlt: twitterImageAlt,
+        card: twitter.card || (twitterImage ? 'summary_large_image' : 'summary'),
+      },
+      {
+        id: 'linkedin',
+        label: 'LinkedIn',
+        title: openGraphTitle,
+        description: openGraphDescription,
+        url: openGraphUrl,
+        siteName: socialSiteName,
+        image: openGraph.image,
+        imageAlt: openGraph.imageAlt,
+        card: 'summary-large-image',
+      },
+    ];
 
     if (!openGraph.title) issues.push(issue('warning', 'Social', 'Open Graph title is missing', 'Social platforms may fall back to the page title.'));
     if (!openGraph.description) issues.push(issue('warning', 'Social', 'Open Graph description is missing', 'Add og:description for a controlled share preview.'));
@@ -472,7 +532,7 @@
       field('twitter:image', twitter.image, twitter.image || openGraph.image ? 'good' : 'warning', !twitter.image && openGraph.image ? 'Open Graph fallback available' : ''),
     ];
 
-    return { openGraph, twitter, fields, issues };
+    return { openGraph, twitter, previews, fields, issues };
   }
 
   function analyzeTracking(snapshot) {
@@ -583,7 +643,7 @@
       limitations: [
         'Structural checks are not search-engine feature-eligibility validation.',
         'Tracker detection covers rendered markup and Performance API evidence only.',
-        'The extension does not fetch linked resources or test remote URLs.',
+        'Preview images stay blocked unless the user chooses to load their declared URLs directly.',
       ],
     };
   }

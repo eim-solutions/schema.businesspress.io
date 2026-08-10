@@ -143,7 +143,7 @@
     reportPanel.replaceChildren();
     if (activePanel === 'schema') renderSchema();
     else if (activePanel === 'seo') renderFields('Search metadata', 'Found in the source HTML.', currentReport.seo.fields);
-    else if (activePanel === 'social') renderFields('Social cards', 'Open Graph and X/Twitter tags found in the source HTML.', currentReport.social.fields);
+    else if (activePanel === 'social') renderSocial();
     else if (activePanel === 'tracking') renderTracking();
     else renderOverview();
   }
@@ -219,6 +219,105 @@
     });
     section.append(list);
     reportPanel.append(section, sourceBoundary());
+  }
+
+  function renderSocial() {
+    const previews = currentReport.social.previews || [];
+    const section = reportSection('Share previews', 'Approximate previews from declared metadata. Platforms may crop or rewrite them.');
+    const grid = element('div', 'web-social-preview-grid');
+    previews.forEach((preview) => grid.append(socialPreviewCard(preview)));
+
+    if (previews.some((preview) => safePreviewImageUrl(preview.image))) {
+      const controls = element('div', 'web-social-load-control');
+      const copy = element('p', '', 'Images stay blocked until you choose to load them. Your browser requests the declared image URLs directly with no referrer.');
+      const loadButton = element('button', 'button button-secondary', 'Load preview images');
+      loadButton.type = 'button';
+      loadButton.addEventListener('click', () => loadPreviewImages(grid, loadButton));
+      controls.append(copy, loadButton);
+      section.append(controls);
+    }
+    section.append(grid);
+    reportPanel.append(section);
+
+    const tags = reportSection('Declared social tags', 'Open Graph and X/Twitter tags found in the source HTML.');
+    const list = element('div', 'web-field-list');
+    currentReport.social.fields.forEach((field) => {
+      const row = element('div', 'web-field-row');
+      const value = element('div');
+      value.append(element('strong', '', field.value || 'Not declared'));
+      if (field.note) value.append(element('small', '', field.note));
+      row.append(element('span', '', field.label), value, statusPill(field.status === 'warning' ? 'Review' : field.status === 'error' ? 'Error' : 'Found', field.status));
+      list.append(row);
+    });
+    tags.append(list);
+    reportPanel.append(tags, sourceBoundary());
+  }
+
+  function socialPreviewCard(preview) {
+    const compactX = preview.id === 'x' && preview.card === 'summary';
+    const card = element('article', `web-social-preview web-social-${preview.id}${compactX ? ' web-social-compact' : ''}`);
+    card.setAttribute('aria-label', `${preview.label} preview`);
+    card.append(element('h4', 'web-social-platform', preview.label));
+
+    if (preview.id !== 'google') {
+      const media = element('div', 'web-preview-media');
+      const imageUrl = safePreviewImageUrl(preview.image);
+      media.dataset.imageUrl = imageUrl;
+      media.dataset.imageAlt = preview.imageAlt || `${preview.label} share image`;
+      media.append(
+        element('strong', '', imageUrl ? 'Image declared — not loaded' : 'No image declared'),
+        element('span', '', imageUrl || 'Add an image tag to control this preview.'),
+      );
+      card.append(media);
+    }
+
+    const copy = element('div', 'web-preview-copy');
+    const host = previewHostname(preview.url);
+    if (preview.id === 'google') {
+      copy.append(
+        element('span', 'web-google-site', preview.siteName || host || 'Website'),
+        element('span', 'web-google-url', preview.url || currentReport.page.url),
+        element('p', 'web-preview-title', preview.title || '(Untitled page)'),
+        element('p', '', preview.description || 'No meta description is declared.'),
+      );
+    } else {
+      copy.append(
+        element('small', '', preview.siteName || host || 'Share preview'),
+        element('p', 'web-preview-title', preview.title || '(Untitled page)'),
+        element('p', '', preview.description || 'No social description is declared.'),
+      );
+    }
+    card.append(copy);
+    return card;
+  }
+
+  function loadPreviewImages(grid, loadButton) {
+    grid.querySelectorAll('.web-preview-media[data-image-url]').forEach((media) => {
+      const imageUrl = media.dataset.imageUrl;
+      if (!imageUrl) return;
+      const image = document.createElement('img');
+      image.alt = media.dataset.imageAlt || 'Declared social preview image';
+      image.referrerPolicy = 'no-referrer';
+      image.addEventListener('load', () => media.classList.add('loaded'), { once: true });
+      image.addEventListener('error', () => {
+        media.replaceChildren(element('strong', '', 'Image could not be loaded'), element('span', '', imageUrl));
+        media.classList.add('failed');
+      }, { once: true });
+      media.replaceChildren(image);
+      image.src = imageUrl;
+    });
+    loadButton.disabled = true;
+    loadButton.textContent = 'Images requested';
+  }
+
+  function safePreviewImageUrl(value) {
+    const url = safeUrl(value);
+    return url && ['http:', 'https:'].includes(url.protocol) ? url.href : '';
+  }
+
+  function previewHostname(value) {
+    const url = safeUrl(value);
+    return url ? url.hostname : '';
   }
 
   function renderTracking() {

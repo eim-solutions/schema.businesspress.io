@@ -103,10 +103,19 @@ test('detects SEO gaps and noindex without presenting length guidance as an erro
 test('uses Open Graph values as X/Twitter fallbacks', () => {
   const report = analyzer.analyzeSnapshot(snapshot());
   const twitterTitle = report.social.fields.find((item) => item.label === 'twitter:title');
+  const previews = Object.fromEntries(report.social.previews.map((preview) => [preview.id, preview]));
 
   assert.equal(twitterTitle.status, 'good');
   assert.equal(twitterTitle.note, 'Open Graph fallback available');
   assert.equal(report.social.openGraph.image, 'https://example.com/social/schema-guide.png');
+  assert.deepEqual(report.social.previews.map((preview) => preview.id), ['google', 'facebook', 'x', 'linkedin']);
+  assert.equal(previews.google.title, 'A practical guide to structured data');
+  assert.equal(previews.google.url, 'https://example.com/guides/schema');
+  assert.equal(previews.facebook.image, 'https://example.com/social/schema-guide.png');
+  assert.equal(previews.x.title, 'Structured data guide');
+  assert.equal(previews.x.image, 'https://example.com/social/schema-guide.png');
+  assert.equal(previews.x.card, 'summary_large_image');
+  assert.equal(previews.linkedin.title, 'Structured data guide');
 });
 
 test('detects common trackers from tags, inline signatures, pixels, and loaded resources', () => {
