@@ -114,6 +114,17 @@ test('includes responsive, focus, and reduced-motion paths', () => {
   assert.match(home, /aria-label="Primary navigation"/);
 });
 
+test('uses a local icon system and visible hero privacy checks', () => {
+  assert.match(home, /<symbol id="icon-check"/);
+  assert.match(home, /class="hero-trust"/);
+  assert.match(home, /id="inspectUrlButtonLabel">Check URL/);
+  assert.match(home, /Free to use/);
+  assert.match(home, /No account/);
+  assert.match(home, /No analytics/);
+  assert.match(home, /No saved reports/);
+  assert.doesNotMatch(home, /class="check-token">(?:\{ \}|Aa|↗|◎)/);
+});
+
 test('publishes robots and sitemap discovery', () => {
   const robots = fs.readFileSync(path.join(publicRoot, 'robots.txt'), 'utf8');
   const sitemap = fs.readFileSync(path.join(publicRoot, 'sitemap.xml'), 'utf8');

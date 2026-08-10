@@ -6,6 +6,7 @@
 
   const input = document.getElementById('inspectionUrl');
   const button = document.getElementById('inspectUrlButton');
+  const buttonLabel = document.getElementById('inspectUrlButtonLabel');
   const status = document.getElementById('inspectionStatus');
   const workspace = document.getElementById('browserReport');
   const reportTitle = document.getElementById('reportTitle');
@@ -53,7 +54,7 @@
     }
 
     button.disabled = true;
-    button.textContent = 'Checking page…';
+    buttonLabel.textContent = 'Checking page…';
     workspace.hidden = true;
     showStatus('Fetching the page. We do not save it or the report.', 'loading');
 
@@ -97,7 +98,7 @@
       showStatus(error && error.message ? error.message : 'We could not check this page. Try another public URL.', 'error');
     } finally {
       button.disabled = false;
-      button.textContent = 'Check URL';
+      buttonLabel.textContent = 'Check URL';
     }
   }
 

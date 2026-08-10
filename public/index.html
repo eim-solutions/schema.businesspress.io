@@ -49,6 +49,40 @@
   </script>
 </head>
 <body>
+  <svg class="icon-sprite" aria-hidden="true">
+    <symbol id="icon-check" viewBox="0 0 24 24">
+      <path d="m5 12.5 4.2 4.2L19 7"></path>
+    </symbol>
+    <symbol id="icon-inspect" viewBox="0 0 24 24">
+      <circle cx="10.5" cy="10.5" r="5.5"></circle>
+      <path d="m15 15 4.5 4.5M7.5 10.5h6M10.5 7.5v6"></path>
+    </symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24">
+      <path d="M12 3v12m-4.5-4.5L12 15l4.5-4.5M4 20h16"></path>
+    </symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24">
+      <path d="M12 3 20 6v5c0 4.8-3.2 8.3-8 10-4.8-1.7-8-5.2-8-10V6l8-3Z"></path>
+      <path d="m8.5 12 2.2 2.2 4.8-5"></path>
+    </symbol>
+    <symbol id="icon-code" viewBox="0 0 24 24">
+      <path d="m9 7-5 5 5 5m6-10 5 5-5 5"></path>
+    </symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24">
+      <circle cx="10.5" cy="10.5" r="6.5"></circle>
+      <path d="m15.5 15.5 4 4"></path>
+    </symbol>
+    <symbol id="icon-share" viewBox="0 0 24 24">
+      <circle cx="6" cy="12" r="2.5"></circle>
+      <circle cx="18" cy="6" r="2.5"></circle>
+      <circle cx="18" cy="18" r="2.5"></circle>
+      <path d="m8.2 10.9 7.6-3.8m-7.6 6 7.6 3.8"></path>
+    </symbol>
+    <symbol id="icon-radar" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8"></circle>
+      <circle cx="12" cy="12" r="3"></circle>
+      <path d="M12 4v5m8 3h-5"></path>
+    </symbol>
+  </svg>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
@@ -71,13 +105,20 @@
         <h1>Check a page's<br><span>SEO markup.</span></h1>
         <p class="hero-lede">Enter a public URL to check its source, or use the Chrome extension to inspect the rendered page locally.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="#inspect">Check a public URL</a>
+          <a class="button button-primary" href="#inspect">
+            <span class="button-line"><svg class="ui-icon" aria-hidden="true"><use href="#icon-inspect"></use></svg>Check a public URL</span>
+          </a>
           <a class="button button-secondary button-download" href="/downloads/seomarkup-v0.1.0.zip" download>
-            <span>Get the Chrome extension</span>
+            <span class="button-line"><svg class="ui-icon" aria-hidden="true"><use href="#icon-download"></use></svg>Get the Chrome extension</span>
             <small>Version 0.1.0 · 30 KB ZIP</small>
           </a>
         </div>
-        <p class="hero-note">Free. No account, analytics or saved reports.</p>
+        <ul class="hero-trust" aria-label="SEOMarkup privacy benefits">
+          <li><span class="trust-check"><svg class="ui-icon" aria-hidden="true"><use href="#icon-check"></use></svg></span>Free to use</li>
+          <li><span class="trust-check"><svg class="ui-icon" aria-hidden="true"><use href="#icon-check"></use></svg></span>No account</li>
+          <li><span class="trust-check"><svg class="ui-icon" aria-hidden="true"><use href="#icon-check"></use></svg></span>No analytics</li>
+          <li><span class="trust-check"><svg class="ui-icon" aria-hidden="true"><use href="#icon-check"></use></svg></span>No saved reports</li>
+        </ul>
       </div>
 
       <div class="product-proof" aria-label="SEOMarkup extension preview">
@@ -98,7 +139,10 @@
 
     <section class="browser-inspector" id="inspect" aria-labelledby="inspect-title">
       <div class="inspector-intro">
-        <h2 id="inspect-title">Check a public URL.</h2>
+        <div class="section-title-with-icon">
+          <span class="section-mark" aria-hidden="true"><svg class="ui-icon"><use href="#icon-inspect"></use></svg></span>
+          <h2 id="inspect-title">Check a public URL.</h2>
+        </div>
         <p>We fetch the page once and check its source HTML for schema, SEO, social and tracking markup.</p>
       </div>
 
@@ -107,7 +151,7 @@
           <label for="inspectionUrl">Public page URL</label>
           <div class="url-control">
             <input id="inspectionUrl" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="example.com/page" maxlength="2048" required>
-            <button id="inspectUrlButton" type="submit">Check URL</button>
+            <button id="inspectUrlButton" type="submit"><svg class="ui-icon" aria-hidden="true"><use href="#icon-inspect"></use></svg><span id="inspectUrlButtonLabel">Check URL</span></button>
           </div>
         </form>
         <div class="fetch-receipt" aria-label="Website check privacy summary">
@@ -148,7 +192,10 @@
 
     <section class="permission-receipt" id="privacy" aria-labelledby="privacy-title">
       <div>
-        <h2 id="privacy-title">Check one tab at a time.</h2>
+        <div class="permission-heading">
+          <span class="section-mark" aria-hidden="true"><svg class="ui-icon"><use href="#icon-shield"></use></svg></span>
+          <h2 id="privacy-title">Check one tab at a time.</h2>
+        </div>
         <p>The extension runs only after you click it. It cannot scan other tabs, read sites in the background or save your check history.</p>
       </div>
       <dl>
@@ -175,7 +222,7 @@
 
       <div class="check-rows">
         <article>
-          <div class="check-token">{ }</div>
+          <div class="check-token" aria-hidden="true"><svg class="ui-icon"><use href="#icon-code"></use></svg></div>
           <div>
             <h3>Schema.org</h3>
             <p>Find JSON-LD, Microdata and RDFa. Review types, nested data, syntax and duplicate <code>@id</code> values.</p>
@@ -183,7 +230,7 @@
           <span class="check-label">Structure</span>
         </article>
         <article>
-          <div class="check-token">Aa</div>
+          <div class="check-token" aria-hidden="true"><svg class="ui-icon"><use href="#icon-search"></use></svg></div>
           <div>
             <h3>Search metadata</h3>
             <p>Check titles, descriptions, canonicals, robots, language, headings, image alt text, viewport and hreflang.</p>
@@ -191,7 +238,7 @@
           <span class="check-label">Search</span>
         </article>
         <article>
-          <div class="check-token">↗</div>
+          <div class="check-token" aria-hidden="true"><svg class="ui-icon"><use href="#icon-share"></use></svg></div>
           <div>
             <h3>Social cards</h3>
           <p>Preview titles, descriptions and images for Google, Facebook, X/Twitter and LinkedIn.</p>
@@ -199,7 +246,7 @@
           <span class="check-label">Sharing</span>
         </article>
         <article>
-          <div class="check-token">◎</div>
+          <div class="check-token" aria-hidden="true"><svg class="ui-icon"><use href="#icon-radar"></use></svg></div>
           <div>
             <h3>Tracking tags</h3>
             <p>Find common analytics, advertising, consent, replay and monitoring tags. Every match includes its source.</p>
@@ -237,7 +284,7 @@
         <li><span>4</span><div><strong>Check a page</strong><p>Pin SEOMarkup, open a page and click the extension.</p></div></li>
       </ol>
       <div class="install-actions">
-        <a class="button button-primary" href="/downloads/seomarkup-v0.1.0.zip" download>Download extension v0.1.0</a>
+        <a class="button button-primary" href="/downloads/seomarkup-v0.1.0.zip" download><span class="button-line"><svg class="ui-icon" aria-hidden="true"><use href="#icon-download"></use></svg>Download extension v0.1.0</span></a>
         <a class="text-link" href="/privacy/">Read the privacy policy <span aria-hidden="true">→</span></a>
       </div>
     </section>
@@ -266,6 +313,6 @@
     </nav>
   </footer>
   <script src="/assets/analyzer.js?v=0.2.0"></script>
-  <script src="/assets/web-inspector.js?v=0.2.0"></script>
+  <script src="/assets/web-inspector.js?v=0.2.1"></script>
 </body>
 </html>
