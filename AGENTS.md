@@ -2,12 +2,12 @@
 
 ## Product boundary
 
-SEOMarkup is a privacy-focused Chrome extension and its public download site. Page inspection must remain local-only: no analytics, accounts, remote validation, browsing-history storage, background scanning, or outbound page-data requests.
+SEOMarkup is a privacy-focused Chrome extension and public browser inspector. Extension inspection must remain local-only: no analytics, accounts, remote validation, browsing-history storage, background scanning, or outbound page-data requests. The web inspector may fetch one user-submitted public URL on the server, but it must clearly disclose that boundary, retain no scan history, use POST so target URLs do not enter normal request paths, and block private-network targets and unsafe redirects.
 
 ## Repository layout
 
 - `extension/`: the load-unpacked Manifest V3 extension.
-- `public/`: the static site deployed at `schema.businesspress.io`.
+- `public/`: the site and guarded URL-inspection endpoint deployed at `schema.businesspress.io`.
 - `tests/`: scanner, manifest, security, and public-site tests.
 - `docs/screenshots/`: verified interface captures.
 

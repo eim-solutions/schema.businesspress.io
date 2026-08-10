@@ -36,13 +36,50 @@ test('publishes valid SoftwareApplication JSON-LD without invented ratings', () 
   assert.equal('aggregateRating' in schema, false);
 });
 
-test('keeps the public site free of analytics and remote scripts', () => {
+test('keeps the public site free of analytics and third-party page assets', () => {
   const source = `${home}\n${privacy}`;
-  assert.doesNotMatch(source, /<script[^>]+src=/i);
+  assert.doesNotMatch(source, /<script[^>]+src=["']https?:/i);
   assert.doesNotMatch(source, /<(?:img|iframe)[^>]+src=["']https?:/i);
   assert.doesNotMatch(source, /<link[^>]+rel=["']stylesheet["'][^>]+href=["']https?:/i);
   assert.doesNotMatch(source, /\b(?:gtag|fbq|plausible|clarity|hj)\s*\(/i);
-  assert.doesNotMatch(source, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket/);
+  assert.doesNotMatch(source, /XMLHttpRequest|sendBeacon|WebSocket/);
+});
+
+test('publishes the URL inspector and explicit server-fetch boundary', () => {
+  assert.match(home, /id="urlInspectorForm"/);
+  assert.match(home, /id="browserReport"/);
+  assert.match(home, /the URL is sent to the BusinessPress server for a one-time source fetch/i);
+  assert.match(home, /src="\/assets\/analyzer\.js"/);
+  assert.match(home, /src="\/assets\/web-inspector\.js"/);
+  assert.match(privacy, /Website URL inspection/);
+});
+
+test('serves the reviewed analyzer unchanged to the website', () => {
+  assert.equal(
+    sha256(path.join(root, 'extension', 'analyzer.js')),
+    sha256(path.join(publicRoot, 'assets', 'analyzer.js')),
+  );
+});
+
+test('web inspector renders with safe DOM APIs and sends URL by POST', () => {
+  const inspector = fs.readFileSync(path.join(publicRoot, 'assets', 'web-inspector.js'), 'utf8');
+  assert.match(inspector, /method: 'POST'/);
+  assert.match(inspector, /body: JSON\.stringify\(\{ url: submittedUrl \}\)/);
+  assert.match(inspector, /new DOMParser\(\)/);
+  assert.match(inspector, /textContent =/);
+  assert.doesNotMatch(inspector, /\.innerHTML\s*=|\beval\s*\(|new Function/);
+});
+
+test('server fetch endpoint has SSRF, redirect, size, and timeout guards', () => {
+  const endpoint = fs.readFileSync(path.join(publicRoot, 'api', 'inspect.php'), 'utf8');
+  assert.match(endpoint, /FILTER_FLAG_NO_PRIV_RANGE \| FILTER_FLAG_NO_RES_RANGE/);
+  assert.match(endpoint, /CURLOPT_RESOLVE/);
+  assert.match(endpoint, /CURLOPT_FOLLOWLOCATION => false/);
+  assert.match(endpoint, /SEOMARKUP_MAX_BODY_BYTES = 2_000_000/);
+  assert.match(endpoint, /CURLOPT_CONNECTTIMEOUT => 5/);
+  assert.match(endpoint, /CURLOPT_TIMEOUT => 12/);
+  assert.match(endpoint, /Only standard web ports 80 and 443/);
+  assert.match(endpoint, /URLs containing login details are not accepted/);
 });
 
 test('ships every linked local asset and download', () => {

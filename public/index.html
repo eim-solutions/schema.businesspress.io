@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SEOMarkup — Private Schema, SEO & Tracking Inspector</title>
-  <meta name="description" content="Inspect Schema.org, SEO and social metadata, and common tracking tags locally in Chrome. No accounts, page-data uploads, analytics, or browsing-history access.">
+  <meta name="description" content="Inspect Schema.org, SEO and social metadata, and common tracking tags from a public URL in your browser or locally with the private Chrome extension.">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <meta name="theme-color" content="#1447e6">
   <link rel="canonical" href="https://schema.businesspress.io/">
@@ -12,13 +12,13 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SEOMarkup">
   <meta property="og:title" content="SEOMarkup — inspect the page, not the person">
-  <meta property="og:description" content="A local-only Chrome inspector for structured data, SEO, social metadata, and tracking evidence.">
+  <meta property="og:description" content="Inspect a public URL in your browser, or use the local-only Chrome extension for rendered structured data and tracking evidence.">
   <meta property="og:url" content="https://schema.businesspress.io/">
   <meta property="og:image" content="https://schema.businesspress.io/assets/seomarkup-og.png">
   <meta property="og:image:alt" content="SEOMarkup showing structured-data and tracking evidence in a private local inspector">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SEOMarkup — inspect the page, not the person">
-  <meta name="twitter:description" content="A local-only Chrome inspector for structured data, SEO, social metadata, and tracking evidence.">
+  <meta name="twitter:description" content="Inspect a public URL in your browser, or use the local-only Chrome extension for rendered structured data and tracking evidence.">
   <meta name="twitter:image" content="https://schema.businesspress.io/assets/seomarkup-og.png">
   <meta name="twitter:image:alt" content="SEOMarkup showing structured-data and tracking evidence in a private local inspector">
   <link rel="stylesheet" href="/assets/site.css">
@@ -34,6 +34,7 @@
     "url": "https://schema.businesspress.io/",
     "downloadUrl": "https://schema.businesspress.io/downloads/seomarkup-v0.1.0.zip",
     "softwareVersion": "0.1.0",
+    "featureList": "Public URL source inspection, JSON-LD parsing, Microdata and RDFa inventory, SEO metadata inspection, social card inspection, tracker signature evidence",
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -56,6 +57,7 @@
       <span>SEO<strong>Markup</strong></span>
     </a>
     <nav aria-label="Primary navigation">
+      <a href="#inspect">Inspect a URL</a>
       <a href="#checks">What it checks</a>
       <a href="#privacy">Privacy</a>
       <a href="/privacy/">Policy</a>
@@ -68,15 +70,15 @@
       <div class="hero-copy">
         <p class="eyebrow">Structured data · SEO · tracking evidence</p>
         <h1>Inspect the page.<br><span>Not the person.</span></h1>
-        <p class="hero-lede">See the markup search engines, social platforms, and tracking tools can read—without handing your browsing history to another company.</p>
+        <p class="hero-lede">Paste a public URL for a one-time source report, or inspect the rendered page locally with the Chrome extension.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="/downloads/seomarkup-v0.1.0.zip" download>
+          <a class="button button-primary" href="#inspect">Inspect a public URL</a>
+          <a class="button button-secondary button-download" href="/downloads/seomarkup-v0.1.0.zip" download>
             <span>Download for Chrome</span>
             <small>Version 0.1.0 · 30 KB ZIP</small>
           </a>
-          <a class="button button-secondary" href="#install">Installation guide</a>
         </div>
-        <p class="hero-note">Free. Local-only. No account. No analytics.</p>
+        <p class="hero-note">Free. No account. No analytics. No scan history.</p>
       </div>
 
       <div class="product-proof" aria-label="SEOMarkup extension interface">
@@ -93,6 +95,58 @@
           <img src="/assets/screenshots/overview.png" width="740" height="600" alt="SEOMarkup overview showing schema items, issues, tracker evidence, and zero extension requests">
         </figure>
       </div>
+    </section>
+
+    <section class="browser-inspector" id="inspect" aria-labelledby="inspect-title">
+      <div class="inspector-intro">
+        <p class="eyebrow">Browser source inspector</p>
+        <h2 id="inspect-title">Enter a URL.<br>Read the evidence.</h2>
+        <p>SEOMarkup fetches one public HTML response, analyzes it in this tab, then provides a copyable and downloadable report.</p>
+      </div>
+
+      <div class="inspection-console">
+        <form class="url-form" id="urlInspectorForm">
+          <label for="inspectionUrl">Public page URL</label>
+          <div class="url-control">
+            <input id="inspectionUrl" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="example.com/page" maxlength="2048" required>
+            <button id="inspectUrlButton" type="submit">Inspect this URL</button>
+          </div>
+        </form>
+        <div class="fetch-receipt" aria-label="Web inspection privacy receipt">
+          <span><b>1</b> public page fetched</span>
+          <span><b>0</b> scan-history entries</span>
+          <span><b>0</b> analytics events</span>
+        </div>
+        <p class="inspection-explainer"><strong>Clear boundary:</strong> the URL is sent to the BusinessPress server for a one-time source fetch. Page content is returned to this tab and is not saved by SEOMarkup. Use the extension when the page must stay entirely local.</p>
+        <p class="inspection-status" id="inspectionStatus" role="status" aria-live="polite">Ready to inspect a public HTML page.</p>
+      </div>
+
+      <section class="browser-report" id="browserReport" aria-labelledby="reportTitle" hidden>
+        <header class="browser-report-header">
+          <div>
+            <p class="eyebrow">Source report</p>
+            <h2 id="reportTitle">Page title</h2>
+            <a id="reportUrl" href="https://example.com" target="_blank" rel="noopener noreferrer">https://example.com</a>
+            <p id="reportMeta">Source HTML · not saved</p>
+          </div>
+          <div class="report-actions">
+            <button class="button button-secondary" id="copyWebReport" type="button">Copy summary</button>
+            <button class="button button-primary" id="exportWebReport" type="button">Export JSON</button>
+          </div>
+        </header>
+
+        <div class="browser-stats" id="reportStats" aria-label="Inspection summary"></div>
+
+        <nav class="report-tabs" id="reportTabs" role="tablist" aria-label="Report sections">
+          <button class="active" type="button" role="tab" aria-selected="true" data-report-tab="overview">Overview</button>
+          <button type="button" role="tab" aria-selected="false" tabindex="-1" data-report-tab="schema">Schema <span>0</span></button>
+          <button type="button" role="tab" aria-selected="false" tabindex="-1" data-report-tab="seo">SEO</button>
+          <button type="button" role="tab" aria-selected="false" tabindex="-1" data-report-tab="social">Social</button>
+          <button type="button" role="tab" aria-selected="false" tabindex="-1" data-report-tab="tracking">Tracking <span>0</span></button>
+        </nav>
+
+        <div class="browser-report-panel" id="reportPanel" role="tabpanel" tabindex="0"></div>
+      </section>
     </section>
 
     <section class="permission-receipt" id="privacy" aria-labelledby="privacy-title">
@@ -218,5 +272,7 @@
       <a href="https://github.com/eim-solutions/schema.businesspress.io">Source</a>
     </nav>
   </footer>
+  <script src="/assets/analyzer.js"></script>
+  <script src="/assets/web-inspector.js"></script>
 </body>
 </html>

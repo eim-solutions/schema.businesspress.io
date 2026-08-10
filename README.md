@@ -1,6 +1,6 @@
 # SEOMarkup Structured Data Schema Inspector
 
-A privacy-focused Chrome extension and public download site for inspecting Schema.org markup, SEO and social metadata, and common tracking tags. Page analysis runs entirely inside the current tab and sends nothing to a server.
+A privacy-focused Chrome extension and browser-based source inspector for Schema.org markup, SEO and social metadata, and common tracking tags.
 
 Public site: [schema.businesspress.io](https://schema.businesspress.io)
 
@@ -22,6 +22,10 @@ The interface separates direct evidence from guidance: parsing failures are erro
 - Copyable summaries and user-triggered local JSON exports
 
 SEOMarkup reports what exists in the rendered page. It does not claim search-engine eligibility, fetch remote vocabularies, test URLs, or replace Google Rich Results Test/Search Console.
+
+## Browser URL reports
+
+The landing page accepts one public URL and returns a source-only report in the current browser tab. The endpoint fetches up to 2 MB of HTML, follows only validated public redirects, blocks private/reserved networks and non-standard ports, and does not retain scan history. It does not execute page JavaScript or load linked assets, so rendered DOM and runtime tracker evidence still require the extension.
 
 ## Privacy and permissions
 
@@ -53,10 +57,12 @@ The package command creates both `dist/seomarkup-v0.1.0.zip` and the public down
 
 ## Public site
 
-The static site lives in `public/`. Run it locally with:
+The site lives in `public/`. The landing page itself can be previewed with a static server, while URL reports require PHP with cURL:
 
 ```bash
 python3 -m http.server 4174 --directory public
+# or
+php -S 127.0.0.1:4174 -t public
 ```
 
 Forge should use the HTML framework, repository root `/`, web directory `/public`, branch `main`, and this zero-downtime deployment script:
@@ -66,6 +72,8 @@ $CREATE_RELEASE()
 cd $FORGE_RELEASE_DIRECTORY
 $ACTIVATE_RELEASE()
 ```
+
+The otherwise-static Forge site needs one exact PHP-FPM location for `/api/inspect.php`; all other PHP paths remain blocked. The reviewed snippet is in [`docs/forge-nginx-api-location.conf`](docs/forge-nginx-api-location.conf). Confirm the server's active PHP socket before applying it.
 
 ## Current limitations
 

@@ -19,7 +19,7 @@ Use the native system sans-serif stack and a native monospace stack for evidence
 
 ## Signature
 
-The permission receipt is the memorable element: a plain, verifiable statement that the extension receives one clicked tab, runs one local scan, and sends zero page-data requests.
+The evidence console is the memorable element: a URL input styled as a precise inspection instrument, followed by a verifiable receipt. The receipt distinguishes one server-fetched public page from the extension's one clicked tab and zero outbound page-data requests.
 
 ## Responsive behavior
 

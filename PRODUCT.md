@@ -6,19 +6,27 @@ Marketers, developers, editors, and site owners who need to inspect a page quick
 
 ## Job
 
-Show what the current page declares through Schema.org, SEO, social metadata, and common tracking tags. Keep every scanned value inside the browser.
+Show what a page declares through Schema.org, SEO, social metadata, and common tracking tags. Offer two explicit modes: a source-only public URL report in the browser, and a rendered local-only report through the Chrome extension.
 
 ## Promise
 
 SEOMarkup reports direct rendered-page evidence and clearly separates errors, warnings, and non-blocking guidance. It does not invent an SEO score or claim rich-result eligibility.
 
-## Privacy boundary
+## Extension privacy boundary
 
 - Runs only after the toolbar button is clicked.
 - Requests only `activeTab` and `scripting`.
 - Has no host permissions, accounts, analytics, saved history, or remote API.
 - Redacts tracking query values in the UI and exports only after an explicit user action.
 
+## Website inspection boundary
+
+- Accepts one user-submitted public HTTP or HTTPS page over POST.
+- Fetches source HTML once, returns it to the active browser tab for analysis, and keeps no application scan history.
+- Blocks private, reserved, local, authenticated, non-standard-port, oversized, and unsafe redirect targets.
+- Does not run the target page's JavaScript, load its linked assets, or claim to show the rendered DOM.
+- Clearly directs users to the extension when page data must stay entirely local.
+
 ## Public site
 
-`schema.businesspress.io` explains the product, publishes the privacy statement, and serves the reviewed extension archive. The site itself contains no analytics or advertising pixels.
+`schema.businesspress.io` provides the source inspector, explains the product, publishes the privacy statement, and serves the reviewed extension archive. The site itself contains no analytics or advertising pixels.
