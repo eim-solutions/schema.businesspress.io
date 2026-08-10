@@ -2,10 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://schema.businesspress.io/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-11</lastmod>
   </url>
   <url>
     <loc>https://schema.businesspress.io/privacy/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-11</lastmod>
+  </url>
+  <url>
+    <loc>https://schema.businesspress.io/schema-markup-checker/</loc>
+    <lastmod>2026-08-11</lastmod>
+  </url>
+  <url>
+    <loc>https://schema.businesspress.io/structured-data-checker/</loc>
+    <lastmod>2026-08-11</lastmod>
+  </url>
+  <url>
+    <loc>https://schema.businesspress.io/json-ld-validator/</loc>
+    <lastmod>2026-08-11</lastmod>
+  </url>
+  <url>
+    <loc>https://schema.businesspress.io/social-media-preview-checker/</loc>
+    <lastmod>2026-08-11</lastmod>
+  </url>
+  <url>
+    <loc>https://schema.businesspress.io/open-graph-checker/</loc>
+    <lastmod>2026-08-11</lastmod>
+  </url>
+  <url>
+    <loc>https://schema.businesspress.io/twitter-card-checker/</loc>
+    <lastmod>2026-08-11</lastmod>
+  </url>
+  <url>
+    <loc>https://schema.businesspress.io/meta-tag-checker/</loc>
+    <lastmod>2026-08-11</lastmod>
+  </url>
+  <url>
+    <loc>https://schema.businesspress.io/tracking-pixel-checker/</loc>
+    <lastmod>2026-08-11</lastmod>
   </url>
 </urlset>

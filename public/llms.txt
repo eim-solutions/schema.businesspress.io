@@ -1,0 +1,32 @@
+# SEOMarkup Structured Data Schema Inspector
+
+SEOMarkup is a free, privacy-focused tool from BusinessPress for inspecting Schema.org data, SEO metadata, social sharing tags and common tracking code.
+
+## Use the website
+
+- Main inspector: https://schema.businesspress.io/
+- Schema Markup Checker: https://schema.businesspress.io/schema-markup-checker/
+- Structured Data Checker: https://schema.businesspress.io/structured-data-checker/
+- JSON-LD Validator: https://schema.businesspress.io/json-ld-validator/
+- Social Media Preview Checker: https://schema.businesspress.io/social-media-preview-checker/
+- Open Graph Checker: https://schema.businesspress.io/open-graph-checker/
+- Twitter Card Checker: https://schema.businesspress.io/twitter-card-checker/
+- SEO Meta Tag Checker: https://schema.businesspress.io/meta-tag-checker/
+- Tracking Pixel Checker: https://schema.businesspress.io/tracking-pixel-checker/
+- Privacy policy: https://schema.businesspress.io/privacy/
+
+The website accepts one user-submitted public HTTP or HTTPS URL. It fetches the source HTML once for the active report and does not keep application scan history. It blocks private, reserved, local, authenticated, non-standard-port, oversized and unsafe redirect targets. It does not run the target page's JavaScript.
+
+## Use the Chrome extension
+
+The Chrome extension inspects the rendered current tab locally after the user clicks it. It has no host permissions, account, analytics or saved history. It is the correct mode for private pages, JavaScript-added markup and rendered resource evidence.
+
+## Limits
+
+SEOMarkup reports direct markup evidence and structural guidance. It does not provide an SEO score, confirm rich-result eligibility, determine legal compliance or predict rankings. Social previews are approximate because platforms can cache, crop or rewrite metadata.
+
+## Publisher
+
+- BusinessPress: https://businesspress.io/
+- BusinessPress Tools: https://tools.businesspress.io/
+- Source code: https://github.com/eim-solutions/schema.businesspress.io

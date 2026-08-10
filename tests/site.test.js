@@ -11,6 +11,20 @@ const publicRoot = path.join(root, 'public');
 const home = fs.readFileSync(path.join(publicRoot, 'index.html'), 'utf8');
 const privacy = fs.readFileSync(path.join(publicRoot, 'privacy', 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(publicRoot, 'assets', 'site.css'), 'utf8');
+const checkerSlugs = [
+  'schema-markup-checker',
+  'structured-data-checker',
+  'json-ld-validator',
+  'social-media-preview-checker',
+  'open-graph-checker',
+  'twitter-card-checker',
+  'meta-tag-checker',
+  'tracking-pixel-checker',
+];
+const checkerPages = checkerSlugs.map((slug) => ({
+  slug,
+  html: fs.readFileSync(path.join(publicRoot, slug, 'index.html'), 'utf8'),
+}));
 
 function sha256(file) {
   return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
@@ -128,8 +142,50 @@ test('uses a local icon system and visible hero privacy checks', () => {
 test('publishes robots and sitemap discovery', () => {
   const robots = fs.readFileSync(path.join(publicRoot, 'robots.txt'), 'utf8');
   const sitemap = fs.readFileSync(path.join(publicRoot, 'sitemap.xml'), 'utf8');
+  const llms = fs.readFileSync(path.join(publicRoot, 'llms.txt'), 'utf8');
 
   assert.match(robots, /Sitemap: https:\/\/schema\.businesspress\.io\/sitemap\.xml/);
   assert.match(sitemap, /<loc>https:\/\/schema\.businesspress\.io\/<\/loc>/);
   assert.match(sitemap, /<loc>https:\/\/schema\.businesspress\.io\/privacy\/<\/loc>/);
+  checkerSlugs.forEach((slug) => {
+    assert.match(sitemap, new RegExp(`<loc>https://schema\\.businesspress\\.io/${slug}/</loc>`));
+    assert.match(llms, new RegExp(`https://schema\\.businesspress\\.io/${slug}/`));
+  });
+  assert.match(llms, /does not provide an SEO score/i);
+});
+
+test('publishes useful focused checker pages with unique metadata and the working inspector', () => {
+  const titles = new Set();
+  const descriptions = new Set();
+
+  checkerPages.forEach(({ slug, html }) => {
+    const title = html.match(/<title>([^<]+)<\/title>/)?.[1];
+    const description = html.match(/<meta name="description" content="([^"]+)">/)?.[1];
+    assert.ok(title, `${slug} should have a title`);
+    assert.ok(description, `${slug} should have a description`);
+    titles.add(title);
+    descriptions.add(description);
+    assert.match(html, new RegExp(`<link rel="canonical" href="https://schema\\.businesspress\\.io/${slug}/">`));
+    assert.match(html, /<meta name="robots" content="index,follow,max-image-preview:large">/);
+    assert.match(html, /id="urlInspectorForm"/);
+    assert.match(html, /id="browserReport"/);
+    assert.match(html, /What this check covers/);
+    assert.match(html, /Source check or rendered check\?/);
+    assert.match(html, /Related checks/);
+
+    const match = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+    assert.ok(match, `${slug} should have JSON-LD`);
+    const graph = JSON.parse(match[1])['@graph'];
+    assert.ok(graph.some((item) => item['@type'] === 'WebPage'));
+    assert.ok(graph.some((item) => item['@type'] === 'BreadcrumbList'));
+    assert.ok(graph.some((item) => item['@type'] === 'SoftwareApplication'));
+  });
+
+  assert.equal(titles.size, checkerPages.length);
+  assert.equal(descriptions.size, checkerPages.length);
+});
+
+test('homepage links to every focused checker and BusinessPress Tools', () => {
+  checkerSlugs.forEach((slug) => assert.match(home, new RegExp(`href="/${slug}/"`)));
+  assert.match(home, /href="https:\/\/tools\.businesspress\.io\/"/);
 });

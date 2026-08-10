@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="Check a public page's source, or use the local Chrome extension to inspect rendered schema, SEO and tracking tags.">
   <meta name="twitter:image" content="https://schema.businesspress.io/assets/seomarkup-og.png">
   <meta name="twitter:image:alt" content="SEOMarkup showing schema issues, SEO metadata and detected tracking tags">
-  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="stylesheet" href="/assets/site.css?v=0.3.0">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -92,7 +92,7 @@
     </a>
     <nav aria-label="Primary navigation">
       <a href="#inspect">Check a URL</a>
-      <a href="#checks">Checks</a>
+      <a href="#focused-checks">Focused checks</a>
       <a href="#privacy">Privacy</a>
       <a href="/privacy/">Privacy policy</a>
       <a class="nav-download" href="/downloads/seomarkup-v0.1.0.zip" download>Download v0.1.0</a>
@@ -256,6 +256,23 @@
       </div>
     </section>
 
+    <section class="focused-checks" id="focused-checks" aria-labelledby="focused-checks-title">
+      <div class="focused-checks-heading">
+        <h2 id="focused-checks-title">Start with the check you need.</h2>
+        <p>Each focused checker uses the same report, with practical guidance for the markup you are reviewing.</p>
+      </div>
+      <nav class="focused-checks-list" aria-label="Focused SEO and metadata checks">
+        <a href="/schema-markup-checker/"><span>Schema Markup Checker</span><small>Schema.org types, formats and structural issues</small></a>
+        <a href="/structured-data-checker/"><span>Structured Data Checker</span><small>JSON-LD, Microdata and RDFa in one report</small></a>
+        <a href="/json-ld-validator/"><span>JSON-LD Validator</span><small>JSON syntax, entities, types and identifiers</small></a>
+        <a href="/social-media-preview-checker/"><span>Social Media Preview Checker</span><small>Google, Facebook, X and LinkedIn previews</small></a>
+        <a href="/open-graph-checker/"><span>Open Graph Checker</span><small>OG titles, descriptions, images and URLs</small></a>
+        <a href="/twitter-card-checker/"><span>Twitter Card Checker</span><small>X/Twitter card type, copy and image</small></a>
+        <a href="/meta-tag-checker/"><span>SEO Meta Tag Checker</span><small>Titles, canonicals, robots and social tags</small></a>
+        <a href="/tracking-pixel-checker/"><span>Tracking Pixel Checker</span><small>Common analytics, advertising and monitoring tags</small></a>
+      </nav>
+    </section>
+
     <section class="interface-section" aria-labelledby="interface-title">
       <div class="section-intro compact">
         <h2 id="interface-title">Open every finding.</h2>
@@ -308,6 +325,7 @@
     <p>A private page-markup checker from BusinessPress.</p>
     <nav aria-label="Footer navigation">
       <a href="/privacy/">Privacy</a>
+      <a href="https://tools.businesspress.io/">BusinessPress Tools</a>
       <a href="https://businesspress.io/">BusinessPress</a>
       <a href="https://github.com/eim-solutions/schema.businesspress.io">GitHub</a>
     </nav>

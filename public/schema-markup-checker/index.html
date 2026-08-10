@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema Markup Checker — Test Schema.org Markup | SEOMarkup</title>
+  <meta name="description" content="Check Schema.org markup from a public URL. Find JSON-LD, Microdata and RDFa, review syntax issues, and see the exact source evidence.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#1447e6">
+  <link rel="canonical" href="https://schema.businesspress.io/schema-markup-checker/">
+  <link rel="icon" href="/favicon.png" sizes="32x32">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SEOMarkup">
+  <meta property="og:title" content="Schema Markup Checker | SEOMarkup">
+  <meta property="og:description" content="Check Schema.org markup from a public URL. Find JSON-LD, Microdata and RDFa, review syntax issues, and see the exact source evidence.">
+  <meta property="og:url" content="https://schema.businesspress.io/schema-markup-checker/">
+  <meta property="og:image" content="https://schema.businesspress.io/assets/seomarkup-og.png">
+  <meta property="og:image:alt" content="SEOMarkup schema, SEO, social metadata and tracking report">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Schema Markup Checker | SEOMarkup">
+  <meta name="twitter:description" content="Check Schema.org markup from a public URL. Find JSON-LD, Microdata and RDFa, review syntax issues, and see the exact source evidence.">
+  <meta name="twitter:image" content="https://schema.businesspress.io/assets/seomarkup-og.png">
+  <link rel="stylesheet" href="/assets/site.css?v=0.3.0">
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://schema.businesspress.io/schema-markup-checker/#page",
+      "url": "https://schema.businesspress.io/schema-markup-checker/",
+      "name": "Schema Markup Checker",
+      "description": "Check Schema.org markup from a public URL. Find JSON-LD, Microdata and RDFa, review syntax issues, and see the exact source evidence.",
+      "isPartOf": {
+        "@id": "https://schema.businesspress.io/#website"
+      },
+      "mainEntity": {
+        "@id": "https://schema.businesspress.io/#software"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://schema.businesspress.io/#website",
+      "url": "https://schema.businesspress.io/",
+      "name": "SEOMarkup",
+      "publisher": {
+        "@type": "Organization",
+        "name": "BusinessPress",
+        "url": "https://businesspress.io/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "SEOMarkup",
+          "item": "https://schema.businesspress.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Schema Markup Checker",
+          "item": "https://schema.businesspress.io/schema-markup-checker/"
+        }
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://schema.businesspress.io/#software",
+      "name": "SEOMarkup Structured Data Schema Inspector",
+      "applicationCategory": "BrowserApplication",
+      "operatingSystem": "Web, Chrome",
+      "url": "https://schema.businesspress.io/",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "BusinessPress",
+        "url": "https://businesspress.io/"
+      }
+    }
+  ]
+}</script>
+</head>
+<body class="seo-checker-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="SEOMarkup home"><img src="/assets/icon.svg" width="34" height="34" alt=""><span>SEO<strong>Markup</strong></span></a>
+    <nav aria-label="Primary navigation"><a href="#check">Check a URL</a><a href="#guide">Guide</a><a href="/privacy/">Privacy</a><a class="nav-download" href="/downloads/seomarkup-v0.1.0.zip" download>Download extension</a></nav>
+  </header>
+  <main id="main">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">SEOMarkup</a><span aria-hidden="true">/</span><span>Schema Markup Checker</span></nav>
+    <section class="seo-checker-hero" aria-labelledby="page-title">
+      <div class="seo-checker-copy">
+        <h1 id="page-title">Schema Markup Checker</h1>
+        <p>Enter a public page to find its Schema.org markup, types and structural issues. The report shows what is declared in the source without inventing a score.</p>
+        <ul class="seo-proof-list"><li>Free to use</li><li>No account</li><li>No saved reports</li><li>No analytics</li></ul>
+      </div>
+      <div class="inspection-console seo-page-console" id="check">
+        <form class="url-form" id="urlInspectorForm">
+          <label for="inspectionUrl">Public page URL</label>
+          <div class="url-control"><input id="inspectionUrl" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="example.com/page" maxlength="2048" required><button id="inspectUrlButton" type="submit"><span id="inspectUrlButtonLabel">Check URL</span></button></div>
+        </form>
+        <div class="fetch-receipt" aria-label="Website check privacy summary"><span><b>1</b> page fetched</span><span><b>0</b> reports saved</span><span><b>0</b> analytics events</span></div>
+        <p class="inspection-explainer">Your URL is sent to BusinessPress for this one-time source check. We do not save the page or report.</p>
+        <p class="inspection-status" id="inspectionStatus" role="status" aria-live="polite">Enter a public URL to start.</p>
+      </div>
+    </section>
+    
+      <section class="browser-report" id="browserReport" aria-labelledby="reportTitle" hidden>
+        <header class="browser-report-header">
+          <div><h2 id="reportTitle">Page title</h2><a id="reportUrl" href="https://example.com" target="_blank" rel="noopener noreferrer">https://example.com</a><p id="reportMeta">Source HTML · not saved</p></div>
+          <div class="report-actions"><button class="button button-secondary" id="copyWebReport" type="button">Copy summary</button><button class="button button-primary" id="exportWebReport" type="button">Download JSON</button></div>
+        </header>
+        <div class="browser-stats" id="reportStats" aria-label="Page check summary"></div>
+        <nav class="report-tabs" id="reportTabs" role="tablist" aria-label="Report sections">
+          <button class="active" type="button" role="tab" aria-selected="true" data-report-tab="overview">Overview</button>
+          <button type="button" role="tab" aria-selected="false" tabindex="-1" data-report-tab="schema">Schema <span>0</span></button>
+          <button type="button" role="tab" aria-selected="false" tabindex="-1" data-report-tab="seo">Search</button>
+          <button type="button" role="tab" aria-selected="false" tabindex="-1" data-report-tab="social">Social</button>
+          <button type="button" role="tab" aria-selected="false" tabindex="-1" data-report-tab="tracking">Tracking <span>0</span></button>
+        </nav>
+        <div class="browser-report-panel" id="reportPanel" role="tabpanel" tabindex="0"></div>
+      </section>
+    <section class="seo-guide" id="guide" aria-labelledby="guide-title">
+      <div class="seo-guide-intro"><h2 id="guide-title">What this check covers</h2><p>Use this check before publishing a page, after a template change, or when structured data is missing from search tools.</p></div>
+      <ul class="seo-coverage-list"><li>JSON-LD blocks and declared types</li><li>Microdata item types and properties</li><li>RDFa vocabularies and properties</li><li>Invalid JSON, empty blocks and duplicate identifiers</li></ul>
+      <div class="seo-review-list"><article><h3>Start with syntax</h3><p>Invalid JSON-LD cannot be read reliably. Fix malformed JSON before reviewing the meaning of the data.</p></article><article><h3>Check the declared type</h3><p>Confirm that each type describes the visible page content and that required business facts are not invented.</p></article><article><h3>Confirm the rendered page</h3><p>This browser report checks source HTML. Use the local extension to find schema added after JavaScript runs.</p></article></div>
+    </section>
+    <section class="seo-boundary" aria-labelledby="boundary-title"><h2 id="boundary-title">Source check or rendered check?</h2><div><p><strong>Use this page</strong> for one public URL and the markup returned in its source HTML.</p><p><strong>Use the Chrome extension</strong> for a rendered tab, JavaScript-added markup, loaded-resource evidence, private pages and a fully local report.</p></div><a class="button button-primary" href="/downloads/seomarkup-v0.1.0.zip" download>Download the local extension</a></section>
+    <section class="seo-faq" aria-labelledby="faq-title"><h2 id="faq-title">Questions about schema markup checker</h2><div><details><summary>What schema formats does this checker find?</summary><p>It finds JSON-LD, Microdata and RDFa in the public page source.</p></details><details><summary>Does a clean report guarantee a Google rich result?</summary><p>No. SEOMarkup checks structure and direct evidence, not search feature eligibility or ranking impact.</p></details><details><summary>Can I check a private or local page?</summary><p>Use the Chrome extension for pages that must stay on your device. The website only accepts public web URLs.</p></details></div></section>
+    <section class="related-checkers" aria-labelledby="related-title"><h2 id="related-title">Related checks</h2><nav aria-label="Related SEOMarkup checkers"><a href="/structured-data-checker/"><span>Structured Data Checker</span><small>Inspect structured data on a public page. Review JSON-LD, RDFa and Microdata types, syntax, identifiers and source evidence in one report.</small></a><a href="/json-ld-validator/"><span>JSON-LD Validator</span><small>Validate JSON-LD blocks from a public URL. Find invalid JSON, review Schema.org types, nested entities, @id values and formatted source.</small></a><a href="/meta-tag-checker/"><span>Meta Tag Checker</span><small>Check SEO meta tags from a public URL, including title, description, canonical, robots, language, viewport, headings and social metadata.</small></a></nav></section>
+  </main>
+  <footer><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div><p>A private page-markup checker from BusinessPress.</p><nav aria-label="Footer navigation"><a href="/">All checks</a><a href="/privacy/">Privacy</a><a href="https://tools.businesspress.io/">BusinessPress Tools</a><a href="https://github.com/eim-solutions/schema.businesspress.io">GitHub</a></nav></footer>
+  <script src="/assets/analyzer.js?v=0.2.0"></script>
+  <script src="/assets/web-inspector.js?v=0.2.1"></script>
+</body>
+</html>
