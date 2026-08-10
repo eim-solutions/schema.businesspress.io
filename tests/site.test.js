@@ -49,7 +49,7 @@ test('publishes the URL inspector and explicit server-fetch boundary', () => {
   assert.match(home, /id="urlInspectorForm"/);
   assert.match(home, /id="browserReport"/);
   assert.match(home, /Your URL is sent to BusinessPress for this one-time check/i);
-  assert.match(home, /src="\/assets\/analyzer\.js"/);
+  assert.match(home, /src="\/assets\/analyzer\.js\?v=[^"]+"/);
   assert.match(home, /src="\/assets\/web-inspector\.js\?v=[^"]+"/);
   assert.match(privacy, /Website URL inspection/);
 });
