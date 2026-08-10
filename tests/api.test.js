@@ -64,14 +64,14 @@ test('URL endpoint blocks local and private targets', async () => {
     const payload = await response.json();
     assert.equal(response.status, 422, url);
     assert.equal(payload.ok, false, url);
-    assert.match(payload.error, /public internet addresses|Private and local network/i, url);
+    assert.match(payload.error, /private or reserved address|Private and local network/i, url);
   }
 });
 
 test('URL endpoint blocks credentials and non-standard ports', async () => {
   const cases = [
     ['https://user:password@example.com/', /login details/],
-    ['https://example.com:8080/', /ports 80 and 443/],
+    ['https://example.com:8080/', /port 80 or 443/],
   ];
 
   for (const [url, message] of cases) {

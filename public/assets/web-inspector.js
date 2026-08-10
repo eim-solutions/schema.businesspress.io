@@ -47,15 +47,15 @@
     event.preventDefault();
     const submittedUrl = input.value.trim();
     if (!submittedUrl) {
-      showStatus('Enter a public website URL.', 'error');
+      showStatus('Enter a public URL.', 'error');
       input.focus();
       return;
     }
 
     button.disabled = true;
-    button.textContent = 'Inspecting source…';
+    button.textContent = 'Checking page…';
     workspace.hidden = true;
-    showStatus('Fetching one public HTML page. Nothing is saved to scan history.', 'loading');
+    showStatus('Fetching the page. We do not save it or the report.', 'loading');
 
     try {
       const response = await fetch('/api/inspect.php', {
@@ -67,7 +67,7 @@
       });
       const payload = await response.json().catch(() => null);
       if (!response.ok || !payload || !payload.ok) {
-        throw new Error(payload && payload.error ? payload.error : `The scan returned HTTP ${response.status}.`);
+        throw new Error(payload && payload.error ? payload.error : `The check failed with HTTP ${response.status}. Try again.`);
       }
 
       const parsed = new DOMParser().parseFromString(payload.page.html, 'text/html');
@@ -80,24 +80,24 @@
         status: payload.page.status,
         bytes: payload.page.bytes,
         fetchedAt: currentReport.generatedAt,
-        retention: 'Not stored by SEOMarkup',
+        retention: 'Not saved by SEOMarkup',
       };
       currentReport.limitations = [
-        'This web report inspects fetched source HTML, not the browser-rendered DOM.',
-        'JavaScript-injected markup and loaded-resource evidence require the local Chrome extension.',
-        'Structural checks are not search-engine feature-eligibility validation.',
+        'This report checks source HTML, not the rendered page.',
+        'Use the Chrome extension to find markup added by JavaScript and evidence from loaded resources.',
+        'These checks do not confirm search-engine feature eligibility.',
       ];
 
       renderReport();
-      showStatus('Source inspection complete. The report exists in this browser tab.', 'success');
+      showStatus('Check complete. Your report is ready below.', 'success');
       workspace.hidden = false;
       workspace.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
     } catch (error) {
       currentReport = null;
-      showStatus(error && error.message ? error.message : 'The page could not be inspected.', 'error');
+      showStatus(error && error.message ? error.message : 'We could not check this page. Try another public URL.', 'error');
     } finally {
       button.disabled = false;
-      button.textContent = 'Inspect this URL';
+      button.textContent = 'Check URL';
     }
   }
 
@@ -107,12 +107,12 @@
     reportTitle.textContent = report.page.title;
     reportUrl.textContent = report.page.url;
     reportUrl.href = report.page.url;
-    reportMeta.textContent = `Source HTML · HTTP ${report.scan.status} · ${formatBytes(report.scan.bytes)} · not saved`;
+    reportMeta.textContent = `Source HTML · HTTP ${report.scan.status} · ${formatBytes(report.scan.bytes)} · Not saved`;
 
     const stats = [
       [report.summary.schemaItems, 'Schema items'],
-      [report.summary.needsAttention, 'Needs attention'],
-      [report.summary.trackers, 'Tracker signatures'],
+      [report.summary.needsAttention, 'Issues'],
+      [report.summary.trackers, 'Trackers'],
       [1, 'Page fetched'],
     ];
     reportStats.replaceChildren(...stats.map(([value, label], index) => {
@@ -142,17 +142,17 @@
     });
     reportPanel.replaceChildren();
     if (activePanel === 'schema') renderSchema();
-    else if (activePanel === 'seo') renderFields('Search metadata', 'Values declared in the fetched source HTML.', currentReport.seo.fields);
-    else if (activePanel === 'social') renderFields('Social cards', 'Open Graph and X/Twitter declarations with fallback guidance.', currentReport.social.fields);
+    else if (activePanel === 'seo') renderFields('Search metadata', 'Found in the source HTML.', currentReport.seo.fields);
+    else if (activePanel === 'social') renderFields('Social cards', 'Open Graph and X/Twitter tags found in the source HTML.', currentReport.social.fields);
     else if (activePanel === 'tracking') renderTracking();
     else renderOverview();
   }
 
   function renderOverview() {
     const priority = currentReport.issues.filter((issue) => issue.severity !== 'info');
-    const section = reportSection('Priority findings', `${currentReport.summary.errors} errors · ${currentReport.summary.warnings} warnings`);
+    const section = reportSection('Issues to review', `${countLabel(currentReport.summary.errors, 'error')} · ${countLabel(currentReport.summary.warnings, 'warning')}`);
     if (!priority.length) {
-      section.append(emptyState('No structural warnings found', 'Source markup passed SEOMarkup’s checks. Rendered behavior and rich-result eligibility still need their relevant tools.', true));
+      section.append(emptyState('No source markup issues found', 'This does not confirm rendered markup or rich-result eligibility. Use the extension and relevant search tools for those checks.', true));
     } else {
       const list = element('div', 'web-issue-list');
       priority.forEach((issue) => {
@@ -166,21 +166,21 @@
     }
     reportPanel.append(section);
 
-    const types = reportSection('Schema vocabulary', `${currentReport.structuredData.types.length} distinct types`);
+    const types = reportSection('Schema types', `${countLabel(currentReport.structuredData.types.length, 'type')} found`);
     if (currentReport.structuredData.types.length) {
       const chips = element('div', 'web-type-list');
       currentReport.structuredData.types.forEach((type) => chips.append(element('span', '', type)));
       types.append(chips);
     } else {
-      types.append(emptyState('No Schema.org types found', 'The fetched source contains no JSON-LD, Microdata, or RDFa type declarations.'));
+      types.append(emptyState('No Schema.org types in the source HTML', 'The source has no JSON-LD, Microdata or RDFa type declarations.'));
     }
     reportPanel.append(types, sourceBoundary());
   }
 
   function renderSchema() {
-    const section = reportSection('JSON-LD', `${currentReport.structuredData.jsonLd.length} blocks`);
+    const section = reportSection('JSON-LD', countLabel(currentReport.structuredData.jsonLd.length, 'block'));
     if (!currentReport.structuredData.jsonLd.length) {
-      section.append(emptyState('No JSON-LD found', 'JavaScript-injected JSON-LD may appear only in a rendered extension scan.'));
+      section.append(emptyState('No JSON-LD in the source HTML', 'Use the Chrome extension to check for markup added by JavaScript.'));
     } else {
       currentReport.structuredData.jsonLd.forEach((block) => {
         const details = element('details', 'web-schema-card');
@@ -222,9 +222,9 @@
   }
 
   function renderTracking() {
-    const section = reportSection('Tracker signatures', 'Evidence present in source tags, images, iframes, and inline code.');
+    const section = reportSection('Detected trackers', 'Matched in source tags, images, iframes or inline code.');
     if (!currentReport.tracking.length) {
-      section.append(emptyState('No known tracker signatures found', 'This does not prove the page is tracker-free. Runtime, proxied, server-side, blocked, or unfamiliar tools may not appear in source HTML.', true));
+      section.append(emptyState('No known trackers in the source HTML', 'This does not rule out runtime, server-side, blocked, proxied or unfamiliar trackers.', true));
     } else {
       const list = element('div', 'web-tracker-list');
       currentReport.tracking.forEach((tracker) => {
@@ -247,7 +247,7 @@
 
   function sourceBoundary() {
     const note = element('aside', 'source-boundary');
-    note.append(element('strong', '', 'Source scan boundary'), element('p', '', 'The website fetches one public HTML response. Use the local extension for rendered DOM, client-side injected markup, and loaded-resource evidence.'));
+    note.append(element('strong', '', 'Source-only check'), element('p', '', 'This website checks one HTML response. Use the extension to inspect rendered markup and loaded resources.'));
     return note;
   }
 
@@ -277,23 +277,23 @@
   async function copySummary() {
     if (!currentReport) return;
     const lines = [
-      'SEOMarkup source report',
+      'SEOMarkup source check',
       currentReport.page.title,
       currentReport.page.url,
       `Schema items: ${currentReport.summary.schemaItems}`,
-      `Needs attention: ${currentReport.summary.needsAttention}`,
-      `Tracker signatures: ${currentReport.summary.trackers}`,
+      `Issues: ${currentReport.summary.needsAttention}`,
+      `Trackers: ${currentReport.summary.trackers}`,
       '',
       ...currentReport.issues.map((issue) => `[${issue.severity.toUpperCase()}] ${issue.area}: ${issue.title} — ${issue.detail}`),
       '',
-      'Source HTML only; no scan history stored by SEOMarkup.',
+      'Source HTML only. SEOMarkup did not save this report.',
     ];
     try {
       await navigator.clipboard.writeText(lines.join('\n'));
       copyButton.textContent = 'Summary copied';
       setTimeout(() => { copyButton.textContent = 'Copy summary'; }, 1600);
     } catch {
-      showStatus('Clipboard access was blocked. Export the JSON report instead.', 'error');
+      showStatus('Your browser blocked clipboard access. Download the JSON report instead.', 'error');
     }
   }
 
@@ -318,6 +318,10 @@
   function formatBytes(bytes) {
     if (bytes < 1024) return `${bytes} B`;
     return `${(bytes / 1024).toFixed(bytes > 10240 ? 0 : 1)} KB`;
+  }
+
+  function countLabel(count, noun) {
+    return `${count} ${noun}${count === 1 ? '' : 's'}`;
   }
 
   function reducedMotion() {

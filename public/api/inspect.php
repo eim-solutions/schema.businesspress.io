@@ -30,7 +30,7 @@ function normalizedTarget(string $value): array
 {
     $value = trim($value);
     if ($value === '' || strlen($value) > 2048) {
-        throw new InvalidArgumentException('Enter one public URL shorter than 2,048 characters.');
+        throw new InvalidArgumentException('Enter one public URL under 2,048 characters.');
     }
 
     if (!preg_match('~^https?://~i', $value)) {
@@ -39,23 +39,23 @@ function normalizedTarget(string $value): array
 
     $parts = parse_url($value);
     if (!is_array($parts) || empty($parts['host']) || empty($parts['scheme'])) {
-        throw new InvalidArgumentException('Enter a complete public website URL.');
+        throw new InvalidArgumentException('Enter a full public URL, such as https://example.com.');
     }
 
     $scheme = strtolower((string) $parts['scheme']);
     if (!in_array($scheme, ['http', 'https'], true)) {
-        throw new InvalidArgumentException('Only public HTTP and HTTPS pages can be inspected.');
+        throw new InvalidArgumentException('Enter a public HTTP or HTTPS page.');
     }
     if (isset($parts['user']) || isset($parts['pass'])) {
-        throw new InvalidArgumentException('URLs containing login details are not accepted.');
+        throw new InvalidArgumentException('Remove login details from the URL and try again.');
     }
     if (isset($parts['port']) && !in_array((int) $parts['port'], [80, 443], true)) {
-        throw new InvalidArgumentException('Only standard web ports 80 and 443 are accepted.');
+        throw new InvalidArgumentException('Use a URL on standard web port 80 or 443.');
     }
 
     $host = rtrim(strtolower((string) $parts['host']), '.');
     if ($host === 'localhost' || str_ends_with($host, '.localhost')) {
-        throw new InvalidArgumentException('Private and local network addresses cannot be inspected.');
+        throw new InvalidArgumentException('Enter a public URL. Private and local network addresses are blocked.');
     }
 
     if (function_exists('idn_to_ascii')) {
@@ -79,7 +79,7 @@ function normalizedTarget(string $value): array
         $ips = [$host];
     }
     if ($ips === [] || array_filter($ips, static fn (string $ip): bool => !publicIp($ip))) {
-        throw new InvalidArgumentException('The URL must resolve only to public internet addresses.');
+        throw new InvalidArgumentException('This URL resolves to a private or reserved address. Enter a public URL.');
     }
 
     $port = isset($parts['port']) ? (int) $parts['port'] : ($scheme === 'https' ? 443 : 80);
@@ -104,7 +104,7 @@ function resolveRedirect(string $location, string $base): string
 
     $baseParts = parse_url($base);
     if (!is_array($baseParts) || empty($baseParts['scheme']) || empty($baseParts['host'])) {
-        throw new RuntimeException('The redirect target was not readable.');
+        throw new RuntimeException('The page redirects to an invalid URL. Try its final public URL instead.');
     }
 
     $origin = $baseParts['scheme'] . '://' . $baseParts['host'] . (isset($baseParts['port']) ? ':' . $baseParts['port'] : '');
@@ -168,27 +168,27 @@ function fetchPage(string $submittedUrl): array
         curl_close($curl);
 
         if ($tooLarge) {
-            throw new RuntimeException('The page is larger than the 2 MB inspection limit.');
+            throw new RuntimeException('This page is larger than the 2 MB limit. Try a smaller page.');
         }
         if ($success === false) {
-            throw new RuntimeException($error !== '' ? 'The page could not be fetched within the safety limits.' : 'The page could not be fetched.');
+            throw new RuntimeException($error !== '' ? 'We could not fetch this page within the safety limits. Try again or use the extension.' : 'We could not fetch this page. Try again or use the extension.');
         }
 
         if ($status >= 300 && $status < 400 && isset($headers['location'])) {
             if ($redirect === SEOMARKUP_MAX_REDIRECTS) {
-                throw new RuntimeException('The page redirected too many times.');
+                throw new RuntimeException('This page redirects too many times. Enter its final URL instead.');
             }
             $target = resolveRedirect($headers['location'], $validated['url']);
             continue;
         }
 
         if ($status < 200 || $status >= 400) {
-            throw new RuntimeException('The page returned HTTP ' . $status . '.');
+            throw new RuntimeException('This page returned HTTP ' . $status . '. Check the URL or try another public page.');
         }
 
         $contentType = strtolower($headers['content-type'] ?? '');
         if ($contentType !== '' && !str_contains($contentType, 'text/html') && !str_contains($contentType, 'application/xhtml+xml')) {
-            throw new RuntimeException('The URL did not return an HTML page.');
+            throw new RuntimeException('This URL does not return an HTML page. Enter a webpage URL.');
         }
 
         return [
@@ -200,22 +200,22 @@ function fetchPage(string $submittedUrl): array
         ];
     }
 
-    throw new RuntimeException('The page could not be inspected.');
+    throw new RuntimeException('We could not check this page. Try again or use the extension.');
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Allow: POST');
-    respond(405, ['ok' => false, 'error' => 'Use the URL form to start an inspection.']);
+    respond(405, ['ok' => false, 'error' => 'Use the URL form to check a page.']);
 }
 
 $contentLength = isset($_SERVER['CONTENT_LENGTH']) ? (int) $_SERVER['CONTENT_LENGTH'] : 0;
 if ($contentLength > 4096) {
-    respond(413, ['ok' => false, 'error' => 'The inspection request is too large.']);
+    respond(413, ['ok' => false, 'error' => 'This request is too large. Enter one public URL.']);
 }
 
 $input = json_decode((string) file_get_contents('php://input'), true);
 if (!is_array($input) || !isset($input['url']) || !is_string($input['url'])) {
-    respond(422, ['ok' => false, 'error' => 'Enter one public website URL.']);
+    respond(422, ['ok' => false, 'error' => 'Enter one public URL.']);
 }
 
 try {

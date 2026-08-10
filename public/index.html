@@ -3,24 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SEOMarkup — Private Schema, SEO & Tracking Inspector</title>
-  <meta name="description" content="Inspect Schema.org, SEO and social metadata, and common tracking tags from a public URL in your browser or locally with the private Chrome extension.">
+  <title>SEOMarkup — Check Schema, SEO & Tracking Tags</title>
+  <meta name="description" content="Check Schema.org, SEO, social metadata and tracking tags from a public URL or locally with the private Chrome extension.">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <meta name="theme-color" content="#1447e6">
   <link rel="canonical" href="https://schema.businesspress.io/">
   <link rel="icon" href="/favicon.png" sizes="32x32">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SEOMarkup">
-  <meta property="og:title" content="SEOMarkup — inspect the page, not the person">
-  <meta property="og:description" content="Inspect a public URL in your browser, or use the local-only Chrome extension for rendered structured data and tracking evidence.">
+  <meta property="og:title" content="SEOMarkup — check page markup privately">
+  <meta property="og:description" content="Check a public page's source, or use the local Chrome extension to inspect rendered schema, SEO and tracking tags.">
   <meta property="og:url" content="https://schema.businesspress.io/">
   <meta property="og:image" content="https://schema.businesspress.io/assets/seomarkup-og.png">
-  <meta property="og:image:alt" content="SEOMarkup showing structured-data and tracking evidence in a private local inspector">
+  <meta property="og:image:alt" content="SEOMarkup showing schema issues, SEO metadata and detected tracking tags">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SEOMarkup — inspect the page, not the person">
-  <meta name="twitter:description" content="Inspect a public URL in your browser, or use the local-only Chrome extension for rendered structured data and tracking evidence.">
+  <meta name="twitter:title" content="SEOMarkup — check page markup privately">
+  <meta name="twitter:description" content="Check a public page's source, or use the local Chrome extension to inspect rendered schema, SEO and tracking tags.">
   <meta name="twitter:image" content="https://schema.businesspress.io/assets/seomarkup-og.png">
-  <meta name="twitter:image:alt" content="SEOMarkup showing structured-data and tracking evidence in a private local inspector">
+  <meta name="twitter:image:alt" content="SEOMarkup showing schema issues, SEO metadata and detected tracking tags">
   <link rel="stylesheet" href="/assets/site.css">
   <script type="application/ld+json">
   {
@@ -30,11 +30,11 @@
     "alternateName": "SEOMarkup",
     "applicationCategory": "BrowserApplication",
     "operatingSystem": "Chrome",
-    "description": "A local-only Chrome extension for inspecting Schema.org, SEO and social metadata, and common tracking tags.",
+    "description": "A local Chrome extension for checking Schema.org, SEO, social metadata and common tracking tags.",
     "url": "https://schema.businesspress.io/",
     "downloadUrl": "https://schema.businesspress.io/downloads/seomarkup-v0.1.0.zip",
     "softwareVersion": "0.1.0",
-    "featureList": "Public URL source inspection, JSON-LD parsing, Microdata and RDFa inventory, SEO metadata inspection, social card inspection, tracker signature evidence",
+    "featureList": "Public URL source checks, JSON-LD parsing, Microdata and RDFa checks, SEO metadata checks, social card checks, tracking tag detection",
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -57,10 +57,10 @@
       <span>SEO<strong>Markup</strong></span>
     </a>
     <nav aria-label="Primary navigation">
-      <a href="#inspect">Inspect a URL</a>
-      <a href="#checks">What it checks</a>
+      <a href="#inspect">Check a URL</a>
+      <a href="#checks">Checks</a>
       <a href="#privacy">Privacy</a>
-      <a href="/privacy/">Policy</a>
+      <a href="/privacy/">Privacy policy</a>
       <a class="nav-download" href="/downloads/seomarkup-v0.1.0.zip" download>Download v0.1.0</a>
     </nav>
   </header>
@@ -68,40 +68,38 @@
   <main id="main">
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">Structured data · SEO · tracking evidence</p>
-        <h1>Inspect the page.<br><span>Not the person.</span></h1>
-        <p class="hero-lede">Paste a public URL for a one-time source report, or inspect the rendered page locally with the Chrome extension.</p>
+        <h1>Check a page's<br><span>SEO markup.</span></h1>
+        <p class="hero-lede">Enter a public URL to check its source, or use the Chrome extension to inspect the rendered page locally.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="#inspect">Inspect a public URL</a>
+          <a class="button button-primary" href="#inspect">Check a public URL</a>
           <a class="button button-secondary button-download" href="/downloads/seomarkup-v0.1.0.zip" download>
-            <span>Download for Chrome</span>
+            <span>Get the Chrome extension</span>
             <small>Version 0.1.0 · 30 KB ZIP</small>
           </a>
         </div>
-        <p class="hero-note">Free. No account. No analytics. No scan history.</p>
+        <p class="hero-note">Free. No account, analytics or saved reports.</p>
       </div>
 
-      <div class="product-proof" aria-label="SEOMarkup extension interface">
-        <div class="proof-rail" aria-label="Privacy receipt">
-          <span><b>1</b> clicked tab</span>
-          <span><b>1</b> local scan</span>
-          <span class="proof-zero"><b>0</b> requests sent</span>
+      <div class="product-proof" aria-label="SEOMarkup extension preview">
+        <div class="proof-rail" aria-label="Extension privacy summary">
+          <span><b>1</b> tab checked</span>
+          <span><b>1</b> local check</span>
+          <span class="proof-zero"><b>0</b> page-data requests</span>
         </div>
         <figure class="product-frame">
           <div class="frame-bar" aria-hidden="true">
             <span></span><span></span><span></span>
             <code>schema.businesspress.io</code>
           </div>
-          <img src="/assets/screenshots/overview.png" width="740" height="600" alt="SEOMarkup overview showing schema items, issues, tracker evidence, and zero extension requests">
+          <img src="/assets/screenshots/overview.png" width="740" height="600" alt="SEOMarkup showing schema items, issues, detected trackers and no page data sent">
         </figure>
       </div>
     </section>
 
     <section class="browser-inspector" id="inspect" aria-labelledby="inspect-title">
       <div class="inspector-intro">
-        <p class="eyebrow">Browser source inspector</p>
-        <h2 id="inspect-title">Enter a URL.<br>Read the evidence.</h2>
-        <p>SEOMarkup fetches one public HTML response, analyzes it in this tab, then provides a copyable and downloadable report.</p>
+        <h2 id="inspect-title">Check a public URL.</h2>
+        <p>We fetch the page once and check its source HTML for schema, SEO, social and tracking markup.</p>
       </div>
 
       <div class="inspection-console">
@@ -109,38 +107,37 @@
           <label for="inspectionUrl">Public page URL</label>
           <div class="url-control">
             <input id="inspectionUrl" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="example.com/page" maxlength="2048" required>
-            <button id="inspectUrlButton" type="submit">Inspect this URL</button>
+            <button id="inspectUrlButton" type="submit">Check URL</button>
           </div>
         </form>
-        <div class="fetch-receipt" aria-label="Web inspection privacy receipt">
-          <span><b>1</b> public page fetched</span>
-          <span><b>0</b> scan-history entries</span>
+        <div class="fetch-receipt" aria-label="Website check privacy summary">
+          <span><b>1</b> page fetched</span>
+          <span><b>0</b> reports saved</span>
           <span><b>0</b> analytics events</span>
         </div>
-        <p class="inspection-explainer"><strong>Clear boundary:</strong> the URL is sent to the BusinessPress server for a one-time source fetch. Page content is returned to this tab and is not saved by SEOMarkup. Use the extension when the page must stay entirely local.</p>
-        <p class="inspection-status" id="inspectionStatus" role="status" aria-live="polite">Ready to inspect a public HTML page.</p>
+        <p class="inspection-explainer">Your URL is sent to BusinessPress for this one-time check. We do not save the page or report. Use the extension when page data must stay on your device.</p>
+        <p class="inspection-status" id="inspectionStatus" role="status" aria-live="polite">Enter a URL to start.</p>
       </div>
 
       <section class="browser-report" id="browserReport" aria-labelledby="reportTitle" hidden>
         <header class="browser-report-header">
           <div>
-            <p class="eyebrow">Source report</p>
             <h2 id="reportTitle">Page title</h2>
             <a id="reportUrl" href="https://example.com" target="_blank" rel="noopener noreferrer">https://example.com</a>
             <p id="reportMeta">Source HTML · not saved</p>
           </div>
           <div class="report-actions">
             <button class="button button-secondary" id="copyWebReport" type="button">Copy summary</button>
-            <button class="button button-primary" id="exportWebReport" type="button">Export JSON</button>
+            <button class="button button-primary" id="exportWebReport" type="button">Download JSON</button>
           </div>
         </header>
 
-        <div class="browser-stats" id="reportStats" aria-label="Inspection summary"></div>
+        <div class="browser-stats" id="reportStats" aria-label="Page check summary"></div>
 
         <nav class="report-tabs" id="reportTabs" role="tablist" aria-label="Report sections">
           <button class="active" type="button" role="tab" aria-selected="true" data-report-tab="overview">Overview</button>
           <button type="button" role="tab" aria-selected="false" tabindex="-1" data-report-tab="schema">Schema <span>0</span></button>
-          <button type="button" role="tab" aria-selected="false" tabindex="-1" data-report-tab="seo">SEO</button>
+          <button type="button" role="tab" aria-selected="false" tabindex="-1" data-report-tab="seo">Search</button>
           <button type="button" role="tab" aria-selected="false" tabindex="-1" data-report-tab="social">Social</button>
           <button type="button" role="tab" aria-selected="false" tabindex="-1" data-report-tab="tracking">Tracking <span>0</span></button>
         </nav>
@@ -151,18 +148,17 @@
 
     <section class="permission-receipt" id="privacy" aria-labelledby="privacy-title">
       <div>
-        <p class="eyebrow">Permission receipt</p>
-        <h2 id="privacy-title">Two permissions. Nothing broad.</h2>
-        <p>The extension can inspect only the tab you explicitly activate. It cannot read every site in the background or build a history of your scans.</p>
+        <h2 id="privacy-title">Check one tab at a time.</h2>
+        <p>The extension runs only after you click it. It cannot scan other tabs, read sites in the background or save your check history.</p>
       </div>
       <dl>
         <div>
           <dt><code>activeTab</code></dt>
-          <dd>Temporary access after you click SEOMarkup.</dd>
+          <dd>Gives temporary access to the current tab.</dd>
         </div>
         <div>
           <dt><code>scripting</code></dt>
-          <dd>Runs the bundled analyzer inside that one tab.</dd>
+          <dd>Runs SEOMarkup in that tab.</dd>
         </div>
         <div class="receipt-zero">
           <dt><code>host permissions</code></dt>
@@ -173,9 +169,8 @@
 
     <section class="checks" id="checks" aria-labelledby="checks-title">
       <div class="section-intro">
-        <p class="eyebrow">One click, four evidence sets</p>
-        <h2 id="checks-title">What the rendered page actually declares.</h2>
-        <p>No synthetic health score. Errors mean broken structure, warnings identify reviewable omissions, and heuristics stay labelled as guidance.</p>
+        <h2 id="checks-title">Review the markup that matters.</h2>
+        <p>See errors, warnings and guidance without a made-up score.</p>
       </div>
 
       <div class="check-rows">
@@ -183,79 +178,77 @@
           <div class="check-token">{ }</div>
           <div>
             <h3>Schema.org</h3>
-            <p>Parse JSON-LD, inspect graphs and nested types, surface duplicate <code>@id</code> values, and inventory Microdata and RDFa.</p>
+            <p>Find JSON-LD, Microdata and RDFa. Review types, nested data, syntax and duplicate <code>@id</code> values.</p>
           </div>
-          <span class="check-label">Syntax + structure</span>
+          <span class="check-label">Structure</span>
         </article>
         <article>
           <div class="check-token">Aa</div>
           <div>
             <h3>Search metadata</h3>
-            <p>Review title, description, canonical, robots, language, headings, image-alt coverage, viewport, and hreflang.</p>
+            <p>Check titles, descriptions, canonicals, robots, language, headings, image alt text, viewport and hreflang.</p>
           </div>
-          <span class="check-label">Rendered values</span>
+          <span class="check-label">Search</span>
         </article>
         <article>
           <div class="check-token">↗</div>
           <div>
             <h3>Social cards</h3>
-            <p>See Open Graph and X/Twitter declarations, fallback behaviour, share copy, image URLs, and image-alt metadata.</p>
+            <p>Check Open Graph and X/Twitter titles, descriptions, images and fallback values.</p>
           </div>
-          <span class="check-label">Preview control</span>
+          <span class="check-label">Sharing</span>
         </article>
         <article>
           <div class="check-token">◎</div>
           <div>
-            <h3>Tracking evidence</h3>
-            <p>Recognise common analytics, advertising, consent, session-replay, and monitoring tools from tags and loaded resources.</p>
+            <h3>Tracking tags</h3>
+            <p>Find common analytics, advertising, consent, replay and monitoring tags. Every match includes its source.</p>
           </div>
-          <span class="check-label">Evidence, not intent</span>
+          <span class="check-label">Detected code</span>
         </article>
       </div>
     </section>
 
     <section class="interface-section" aria-labelledby="interface-title">
       <div class="section-intro compact">
-        <p class="eyebrow">Readable evidence</p>
-        <h2 id="interface-title">Open the details. Keep the uncertainty visible.</h2>
+        <h2 id="interface-title">Open every finding.</h2>
       </div>
       <div class="interface-grid">
         <figure>
           <img src="/assets/screenshots/schema-detail.png" width="740" height="600" loading="lazy" alt="Expanded JSON-LD block with context, identifiers, validation state, and copy control">
-          <figcaption>JSON-LD remains copyable, readable, and clearly bounded from search-engine eligibility.</figcaption>
+          <figcaption>Inspect and copy each JSON-LD block. SEOMarkup checks structure, not rich-result eligibility.</figcaption>
         </figure>
         <figure>
           <img src="/assets/screenshots/tracking.png" width="740" height="600" loading="lazy" alt="Tracking panel listing Google Tag Manager, Plausible, and LinkedIn evidence">
-          <figcaption>Tracker names include the exact rendered evidence and a confidence label.</figcaption>
+          <figcaption>See the detected tracker, matching code and confidence level.</figcaption>
         </figure>
       </div>
     </section>
 
     <section class="install" id="install" aria-labelledby="install-title">
       <div class="install-copy">
-        <p class="eyebrow">Developer preview</p>
-        <h2 id="install-title">Install in under a minute.</h2>
-        <p>SEOMarkup is currently distributed as a reviewed unpacked extension while the Chrome Web Store listing is prepared.</p>
+        <h2 id="install-title">Add SEOMarkup to Chrome.</h2>
+        <p>The extension is not yet in the Chrome Web Store. Install this reviewed ZIP in Developer mode.</p>
       </div>
       <ol>
-        <li><span>1</span><div><strong>Download and unzip</strong><p>Save the 30 KB archive and extract it locally.</p></div></li>
-        <li><span>2</span><div><strong>Open Chrome extensions</strong><p>Visit <code>chrome://extensions</code> and enable Developer mode.</p></div></li>
-        <li><span>3</span><div><strong>Load the extension</strong><p>Choose “Load unpacked” and select the extracted folder.</p></div></li>
-        <li><span>4</span><div><strong>Inspect a page</strong><p>Pin SEOMarkup and click it on any regular website.</p></div></li>
+        <li><span>1</span><div><strong>Download the ZIP</strong><p>Download and unzip the extension.</p></div></li>
+        <li><span>2</span><div><strong>Open Chrome extensions</strong><p>Go to <code>chrome://extensions</code> and turn on Developer mode.</p></div></li>
+        <li><span>3</span><div><strong>Load the folder</strong><p>Click “Load unpacked” and select the extracted folder.</p></div></li>
+        <li><span>4</span><div><strong>Check a page</strong><p>Pin SEOMarkup, open a page and click the extension.</p></div></li>
       </ol>
       <div class="install-actions">
-        <a class="button button-primary" href="/downloads/seomarkup-v0.1.0.zip" download>Download SEOMarkup v0.1.0</a>
-        <a class="text-link" href="/privacy/">Read the plain-language privacy policy <span aria-hidden="true">→</span></a>
+        <a class="button button-primary" href="/downloads/seomarkup-v0.1.0.zip" download>Download extension v0.1.0</a>
+        <a class="text-link" href="/privacy/">Read the privacy policy <span aria-hidden="true">→</span></a>
       </div>
     </section>
 
     <section class="limits" aria-labelledby="limits-title">
-      <h2 id="limits-title">What it deliberately does not claim.</h2>
+      <h2 id="limits-title">Know the limits.</h2>
       <ul>
-        <li>It does not replace Google Rich Results Test or Search Console.</li>
-        <li>It cannot see server-side, blocked, proxied, or unfamiliar trackers.</li>
-        <li>It does not fetch linked images, canonical URLs, or external vocabularies.</li>
-        <li>It reports markup evidence—not legal compliance, ranking impact, or user intent.</li>
+        <li>Use Google Rich Results Test or Search Console to confirm rich-result eligibility.</li>
+        <li>Some server-side, blocked, proxied or unfamiliar trackers may not appear.</li>
+        <li>The website checker does not load linked images, canonical URLs or external vocabularies.</li>
+        <li>Findings describe markup, not legal compliance, ranking impact or user intent.</li>
       </ul>
     </section>
   </main>
@@ -265,11 +258,11 @@
       <img src="/assets/icon.svg" width="28" height="28" alt="">
       <span>SEO<strong>Markup</strong></span>
     </div>
-    <p>A privacy-focused BusinessPress tool.</p>
+    <p>A private page-markup checker from BusinessPress.</p>
     <nav aria-label="Footer navigation">
       <a href="/privacy/">Privacy</a>
       <a href="https://businesspress.io/">BusinessPress</a>
-      <a href="https://github.com/eim-solutions/schema.businesspress.io">Source</a>
+      <a href="https://github.com/eim-solutions/schema.businesspress.io">GitHub</a>
     </nav>
   </footer>
   <script src="/assets/analyzer.js"></script>

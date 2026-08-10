@@ -17,7 +17,7 @@ function sha256(file) {
 }
 
 test('publishes canonical search and social metadata', () => {
-  assert.match(home, /<title>SEOMarkup — Private Schema, SEO & Tracking Inspector<\/title>/);
+  assert.match(home, /<title>SEOMarkup — Check Schema, SEO & Tracking Tags<\/title>/);
   assert.match(home, /<link rel="canonical" href="https:\/\/schema\.businesspress\.io\/">/);
   assert.match(home, /property="og:image" content="https:\/\/schema\.businesspress\.io\/assets\/seomarkup-og\.png"/);
   assert.match(home, /name="twitter:card" content="summary_large_image"/);
@@ -48,7 +48,7 @@ test('keeps the public site free of analytics and third-party page assets', () =
 test('publishes the URL inspector and explicit server-fetch boundary', () => {
   assert.match(home, /id="urlInspectorForm"/);
   assert.match(home, /id="browserReport"/);
-  assert.match(home, /the URL is sent to the BusinessPress server for a one-time source fetch/i);
+  assert.match(home, /Your URL is sent to BusinessPress for this one-time check/i);
   assert.match(home, /src="\/assets\/analyzer\.js"/);
   assert.match(home, /src="\/assets\/web-inspector\.js"/);
   assert.match(privacy, /Website URL inspection/);
@@ -78,8 +78,8 @@ test('server fetch endpoint has SSRF, redirect, size, and timeout guards', () =>
   assert.match(endpoint, /SEOMARKUP_MAX_BODY_BYTES = 2_000_000/);
   assert.match(endpoint, /CURLOPT_CONNECTTIMEOUT => 5/);
   assert.match(endpoint, /CURLOPT_TIMEOUT => 12/);
-  assert.match(endpoint, /Only standard web ports 80 and 443/);
-  assert.match(endpoint, /URLs containing login details are not accepted/);
+  assert.match(endpoint, /standard web port 80 or 443/);
+  assert.match(endpoint, /Remove login details from the URL/);
 });
 
 test('ships every linked local asset and download', () => {
