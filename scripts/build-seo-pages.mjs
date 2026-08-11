@@ -223,6 +223,34 @@ function structuredData(page) {
   }, null, 2).replaceAll('<', '\\u003c');
 }
 
+function sitemapStructuredData() {
+  const entries = [
+    { name: 'SEOMarkup', url: `${origin}/` },
+    ...pages.map((page) => ({ name: page.name, url: `${origin}/${page.slug}/` })),
+    { name: 'Privacy policy', url: `${origin}/privacy/` },
+  ];
+
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${origin}/sitemap/#page`,
+    url: `${origin}/sitemap/`,
+    name: 'SEOMarkup sitemap',
+    description: 'Browse every public SEOMarkup checker and information page.',
+    isPartOf: { '@id': `${origin}/#website` },
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: entries.length,
+      itemListElement: entries.map((entry, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: entry.name,
+        url: entry.url,
+      })),
+    },
+  }, null, 2).replaceAll('<', '\\u003c');
+}
+
 function reportMarkup() {
   return `
       <section class="browser-report" id="browserReport" aria-labelledby="reportTitle" hidden>
@@ -267,7 +295,7 @@ function renderPage(page) {
   <meta name="twitter:title" content="${escapeHtml(page.name)} | SEOMarkup">
   <meta name="twitter:description" content="${escapeHtml(page.description)}">
   <meta name="twitter:image" content="${origin}/assets/seomarkup-og.png">
-  <link rel="stylesheet" href="/assets/site.css?v=0.3.0">
+  <link rel="stylesheet" href="/assets/site.css?v=0.3.1">
   <script type="application/ld+json">${structuredData(page)}</script>
 </head>
 <body class="seo-checker-page">
@@ -304,7 +332,7 @@ function renderPage(page) {
     <section class="seo-faq" aria-labelledby="faq-title"><h2 id="faq-title">Questions about ${escapeHtml(page.name.toLowerCase())}</h2><div>${page.faq.map(([question, answer]) => `<details><summary>${escapeHtml(question)}</summary><p>${escapeHtml(answer)}</p></details>`).join('')}</div></section>
     <section class="related-checkers" aria-labelledby="related-title"><h2 id="related-title">Related checks</h2><nav aria-label="Related SEOMarkup checkers">${related.map((item) => `<a href="/${item.slug}/"><span>${escapeHtml(item.name)}</span><small>${escapeHtml(item.description)}</small></a>`).join('')}</nav></section>
   </main>
-  <footer><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div><p>A private page-markup checker from BusinessPress.</p><nav aria-label="Footer navigation"><a href="/">All checks</a><a href="/privacy/">Privacy</a><a href="https://tools.businesspress.io/">BusinessPress Tools</a><a href="https://github.com/eim-solutions/schema.businesspress.io">GitHub</a></nav></footer>
+  <footer><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div><p>A private page-markup checker from BusinessPress.</p><nav aria-label="Footer navigation"><a href="/">All checks</a><a href="/sitemap/">Sitemap</a><a href="/privacy/">Privacy</a><a href="https://tools.businesspress.io/">BusinessPress Tools</a><a href="https://github.com/eim-solutions/schema.businesspress.io">GitHub</a></nav></footer>
   <script src="/assets/analyzer.js?v=0.2.0"></script>
   <script src="/assets/web-inspector.js?v=0.2.1"></script>
 </body>
@@ -312,8 +340,64 @@ function renderPage(page) {
 `;
 }
 
+function renderHtmlSitemap() {
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sitemap — All SEOMarkup Checkers and Pages</title>
+  <meta name="description" content="Browse every SEOMarkup schema, structured data, social preview, meta tag and tracking checker from one page.">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#1447e6">
+  <link rel="canonical" href="${origin}/sitemap/">
+  <link rel="icon" href="/favicon.png" sizes="32x32">
+  <link rel="stylesheet" href="/assets/site.css?v=0.3.1">
+  <script type="application/ld+json">${sitemapStructuredData()}</script>
+</head>
+<body class="sitemap-page">
+  <!--
+    THESIS: A complete, scannable index replaces hunting through navigation.
+    OWN-WORLD: White evidence surfaces, deep ink type, cobalt links, and precise rules.
+    STORY: See every public SEOMarkup page, choose the relevant check, and open it directly.
+    FIRST VIEWPORT: Compact header, direct title and grouped link index with no decorative detours.
+    FORM: Read-mode index extending the established SEOMarkup system; seed key: precise-sitemap-index.
+    FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+  -->
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="SEOMarkup home"><img src="/assets/icon.svg" width="34" height="34" alt=""><span>SEO<strong>Markup</strong></span></a>
+    <nav aria-label="Primary navigation"><a href="/">Product</a><a href="/privacy/">Privacy</a><a class="nav-download" href="/downloads/seomarkup-v0.1.0.zip" download>Download extension</a></nav>
+  </header>
+  <main id="main" class="sitemap-shell">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">SEOMarkup</a><span aria-hidden="true">/</span><span>Sitemap</span></nav>
+    <header class="sitemap-intro">
+      <h1>Find the right check.</h1>
+      <p>Open any SEOMarkup checker or information page directly.</p>
+    </header>
+    <section class="sitemap-group" aria-labelledby="checker-pages-title">
+      <h2 id="checker-pages-title">Checker pages</h2>
+      <nav class="sitemap-links" aria-label="SEOMarkup checker pages">
+        ${pages.map((page) => `<a href="/${page.slug}/"><span>${escapeHtml(page.name)}</span><small>${escapeHtml(page.description)}</small></a>`).join('')}
+      </nav>
+    </section>
+    <section class="sitemap-group" aria-labelledby="site-pages-title">
+      <h2 id="site-pages-title">Site information</h2>
+      <nav class="sitemap-links" aria-label="SEOMarkup information pages">
+        <a href="/"><span>SEOMarkup home</span><small>Check a URL, review the extension, and download it for local inspection.</small></a>
+        <a href="/privacy/"><span>Privacy policy</span><small>Understand the separate privacy boundaries for the website and Chrome extension.</small></a>
+        <a href="/sitemap.xml"><span>XML sitemap</span><small>Open the machine-readable list of canonical SEOMarkup pages.</small></a>
+      </nav>
+    </section>
+  </main>
+  <footer><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div><p>A private page-markup checker from BusinessPress.</p><nav aria-label="Footer navigation"><a href="/">Product</a><a href="/sitemap/" aria-current="page">Sitemap</a><a href="/privacy/">Privacy</a><a href="https://tools.businesspress.io/">BusinessPress Tools</a></nav></footer>
+</body>
+</html>
+`;
+}
+
 function sitemap() {
-  const urls = ['', 'privacy', ...pages.map((page) => page.slug)];
+  const urls = ['', 'privacy', 'sitemap', ...pages.map((page) => page.slug)];
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((slug) => `  <url>\n    <loc>${origin}/${slug ? `${slug}/` : ''}</loc>\n    <lastmod>${updated}</lastmod>\n  </url>`).join('\n')}\n</urlset>\n`;
 }
 
@@ -329,6 +413,7 @@ function writeOrCheck(file, content) {
 }
 
 for (const page of pages) writeOrCheck(path.join(publicRoot, page.slug, 'index.html'), renderPage(page));
+writeOrCheck(path.join(publicRoot, 'sitemap', 'index.html'), renderHtmlSitemap());
 writeOrCheck(path.join(publicRoot, 'sitemap.xml'), sitemap());
 
-console.log(`${checkMode ? 'Verified' : 'Built'} ${pages.length} checker pages and sitemap.`);
+console.log(`${checkMode ? 'Verified' : 'Built'} ${pages.length} checker pages, HTML sitemap, and XML sitemap.`);

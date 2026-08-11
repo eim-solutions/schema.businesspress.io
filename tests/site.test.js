@@ -124,6 +124,8 @@ test('includes responsive, focus, and reduced-motion paths', () => {
   assert.match(css, /:focus-visible/);
   assert.match(css, /@media \(max-width: 420px\)/);
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
+  assert.match(css, /@media \(max-width: 760px\)[\s\S]*footer\s*{[^}]*grid-template-columns:\s*1fr;/s);
+  assert.match(css, /@media \(max-width: 760px\)[\s\S]*footer nav\s*{[^}]*flex-wrap:\s*wrap;/s);
   assert.match(home, /class="skip-link"/);
   assert.match(home, /aria-label="Primary navigation"/);
 });
@@ -142,15 +144,22 @@ test('uses a local icon system and visible hero privacy checks', () => {
 test('publishes robots and sitemap discovery', () => {
   const robots = fs.readFileSync(path.join(publicRoot, 'robots.txt'), 'utf8');
   const sitemap = fs.readFileSync(path.join(publicRoot, 'sitemap.xml'), 'utf8');
+  const htmlSitemap = fs.readFileSync(path.join(publicRoot, 'sitemap', 'index.html'), 'utf8');
   const llms = fs.readFileSync(path.join(publicRoot, 'llms.txt'), 'utf8');
 
   assert.match(robots, /Sitemap: https:\/\/schema\.businesspress\.io\/sitemap\.xml/);
   assert.match(sitemap, /<loc>https:\/\/schema\.businesspress\.io\/<\/loc>/);
   assert.match(sitemap, /<loc>https:\/\/schema\.businesspress\.io\/privacy\/<\/loc>/);
+  assert.match(sitemap, /<loc>https:\/\/schema\.businesspress\.io\/sitemap\/<\/loc>/);
+  assert.match(htmlSitemap, /<link rel="canonical" href="https:\/\/schema\.businesspress\.io\/sitemap\/">/);
+  assert.match(htmlSitemap, /href="\/sitemap\.xml"/);
   checkerSlugs.forEach((slug) => {
     assert.match(sitemap, new RegExp(`<loc>https://schema\\.businesspress\\.io/${slug}/</loc>`));
     assert.match(llms, new RegExp(`https://schema\\.businesspress\\.io/${slug}/`));
+    assert.match(htmlSitemap, new RegExp(`href="/${slug}/"`));
   });
+  assert.match(home, /<footer>[\s\S]*href="\/sitemap\/"/);
+  assert.match(privacy, /<footer>[\s\S]*href="\/sitemap\/"/);
   assert.match(llms, /does not provide an SEO score/i);
 });
 
