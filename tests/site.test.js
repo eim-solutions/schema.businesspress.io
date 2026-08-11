@@ -134,7 +134,7 @@ test('includes responsive, focus, and reduced-motion paths', () => {
   assert.match(css, /:focus-visible/);
   assert.match(css, /@media \(max-width: 420px\)/);
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
-  assert.match(css, /@media \(max-width: 760px\)[\s\S]*footer\s*{[^}]*grid-template-columns:\s*1fr;/s);
+  assert.match(css, /@media \(max-width: 760px\)[\s\S]*\.footer-main\s*{[^}]*grid-template-columns:\s*1fr;/s);
   assert.match(css, /@media \(max-width: 760px\)[\s\S]*footer nav\s*{[^}]*flex-wrap:\s*wrap;/s);
   assert.match(home, /class="skip-link"/);
   assert.match(home, /aria-label="Primary navigation"/);
@@ -224,7 +224,13 @@ test('credits BusinessPress consistently in every public footer', () => {
   pages.forEach((html) => {
     assert.match(html, /<footer>[\s\S]*class="powered-by"/);
     assert.match(html, /href="https:\/\/businesspress\.io\/\?utm_source=seomarkup&amp;utm_medium=footer"/);
-    assert.match(html, /src="\/assets\/businesspress-logo\.png"/);
+    assert.match(html, /aria-label="Powered by BusinessPress"/);
+    assert.match(html, /src="\/assets\/businesspress-logo\.png" alt=""/);
+    assert.match(html, /class="footer-privacy" aria-label="Privacy assurances"/);
+    assert.match(html, /GDPR-conscious by design/);
+    assert.match(html, /No site analytics/);
+    assert.match(html, /No saved reports/);
+    assert.match(html, /Local extension checks/);
   });
   assert.equal(fs.existsSync(path.join(publicRoot, 'assets', 'businesspress-logo.png')), true);
 });

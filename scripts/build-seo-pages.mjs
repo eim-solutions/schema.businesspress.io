@@ -183,7 +183,11 @@ function escapeHtml(value) {
 }
 
 function poweredByMarkup() {
-  return '<a class="powered-by" href="https://businesspress.io/?utm_source=seomarkup&amp;utm_medium=footer" target="_blank" rel="noopener noreferrer"><span>Powered by</span><img src="/assets/businesspress-logo.png" alt="BusinessPress — Professional Business Solutions" width="125" height="20" loading="lazy" decoding="async"></a>';
+  return '<a class="powered-by" href="https://businesspress.io/?utm_source=seomarkup&amp;utm_medium=footer" target="_blank" rel="noopener noreferrer" aria-label="Powered by BusinessPress"><span>Powered by</span><img src="/assets/businesspress-logo.png" alt="" width="125" height="20" loading="lazy" decoding="async"></a>';
+}
+
+function footerMarkup(navigation) {
+  return `<footer><div class="footer-main"><div class="footer-product"><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div><p>Privacy-first schema and metadata inspection.</p></div><div class="footer-privacy" aria-label="Privacy assurances"><div class="privacy-seal"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 19 6v5c0 4.6-2.8 8-7 10-4.2-2-7-5.4-7-10V6l7-3Z"></path><path d="m9 12 2 2 4-4"></path></svg><span><strong>Privacy first</strong><small>GDPR-conscious by design</small></span></div><ul class="footer-promises"><li>No site analytics</li><li>No saved reports</li><li>Local extension checks</li></ul></div><nav aria-label="Footer navigation">${navigation}</nav></div><div class="footer-bottom"><p>Public URL checks are one-time. Extension checks stay in your browser.</p>${poweredByMarkup()}</div></footer>`;
 }
 
 function structuredData(page) {
@@ -337,7 +341,7 @@ function renderPage(page) {
     <section class="seo-faq" aria-labelledby="faq-title"><h2 id="faq-title">Questions about ${escapeHtml(page.name.toLowerCase())}</h2><div>${page.faq.map(([question, answer]) => `<details><summary>${escapeHtml(question)}</summary><p>${escapeHtml(answer)}</p></details>`).join('')}</div></section>
     <section class="related-checkers" aria-labelledby="related-title"><h2 id="related-title">Related checks</h2><nav aria-label="Related SEOMarkup checkers">${related.map((item) => `<a href="/${item.slug}/"><span>${escapeHtml(item.name)}</span><small>${escapeHtml(item.description)}</small></a>`).join('')}</nav></section>
   </main>
-  <footer><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div>${poweredByMarkup()}<nav aria-label="Footer navigation"><a href="/">All checks</a><a href="/sitemap/">Sitemap</a><a href="/privacy/">Privacy</a><a href="https://tools.businesspress.io/">BusinessPress Tools</a><a href="https://github.com/eim-solutions/schema.businesspress.io">GitHub</a></nav></footer>
+  ${footerMarkup('<a href="/">All checks</a><a href="/sitemap/">Sitemap</a><a href="/privacy/">Privacy</a><a href="https://tools.businesspress.io/">BusinessPress Tools</a><a href="https://github.com/eim-solutions/schema.businesspress.io">GitHub</a>')}
   <script src="/assets/analyzer.js?v=0.2.0"></script>
   <script src="/assets/report-share.js?v=0.1.0"></script>
   <script src="/assets/web-inspector.js?v=0.3.0"></script>
@@ -396,7 +400,7 @@ function renderHtmlSitemap() {
       </nav>
     </section>
   </main>
-  <footer><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div>${poweredByMarkup()}<nav aria-label="Footer navigation"><a href="/">Product</a><a href="/sitemap/" aria-current="page">Sitemap</a><a href="/privacy/">Privacy</a><a href="https://tools.businesspress.io/">BusinessPress Tools</a></nav></footer>
+  ${footerMarkup('<a href="/">Product</a><a href="/sitemap/" aria-current="page">Sitemap</a><a href="/privacy/">Privacy</a><a href="https://tools.businesspress.io/">BusinessPress Tools</a>')}
 </body>
 </html>
 `;
