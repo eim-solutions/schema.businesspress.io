@@ -140,6 +140,14 @@ test('includes responsive, focus, and reduced-motion paths', () => {
   assert.match(home, /aria-label="Primary navigation"/);
 });
 
+test('keeps one privacy link in the homepage header', () => {
+  const primaryNavigation = home.match(/<nav aria-label="Primary navigation">([\s\S]*?)<\/nav>/)?.[1];
+
+  assert.ok(primaryNavigation, 'homepage primary navigation should exist');
+  assert.equal((primaryNavigation.match(/>Privacy(?: policy)?<\/a>/g) || []).length, 1);
+  assert.match(primaryNavigation, /href="\/privacy\/">Privacy<\/a>/);
+});
+
 test('uses a local icon system and visible hero privacy checks', () => {
   assert.match(home, /<symbol id="icon-check"/);
   assert.match(home, /class="hero-trust"/);
