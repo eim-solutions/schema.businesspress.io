@@ -2,7 +2,7 @@
 
 ## Product boundary
 
-SEOMarkup is a privacy-focused Chrome extension and public browser inspector. Extension inspection must remain local-only: no analytics, accounts, remote validation, browsing-history storage, background scanning, or outbound page-data requests. The web inspector may fetch one user-submitted public URL on the server, but it must clearly disclose that boundary, retain no scan history, use POST so target URLs do not enter normal request paths, and block private-network targets and unsafe redirects.
+SEOMarkup is a privacy-focused Chrome extension and public browser inspector. Extension inspection must remain local-only: no analytics, accounts, remote validation, browsing-history storage, background scanning, or outbound page-data requests. The web inspector may fetch one user-submitted public URL on the server, but it must clearly disclose that boundary, retain no scan history, use POST so target URLs do not enter normal request paths, and block private-network targets and unsafe redirects. Its checked-by-default social-image option may load only declared images, directly from their source with no referrer; the unchecked path must keep them blocked until an explicit click. Share links must remain report-specific URL fragments that the server neither receives nor stores, restore without fetching the inspected page, disclose that anyone with the link can read them, and reject decoded payloads above 2 MB.
 
 ## Repository layout
 

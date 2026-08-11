@@ -25,7 +25,10 @@ SEOMarkup reports direct rendered-page evidence and clearly separates errors, wa
 - Accepts one user-submitted public HTTP or HTTPS page over POST.
 - Fetches source HTML once, returns it to the active browser tab for analysis, and keeps no application scan history.
 - Blocks private, reserved, local, authenticated, non-standard-port, oversized, and unsafe redirect targets.
-- Does not run the target page's JavaScript or automatically load linked assets. Declared social preview images load only after an explicit click.
+- Does not run the target page's JavaScript or load unrelated linked assets.
+- The social-image option is checked by default. Opening the Social tab loads declared images directly from their source with no referrer; unchecking it before inspection keeps them blocked until the user clicks **Load preview images**.
+- Each completed report creates a report-specific compressed URL-fragment link. The server neither receives nor stores the fragment, anyone with the link can read it, and restoring it does not fetch the inspected page again.
+- Shared-report decoding stops when a payload expands beyond 2 MB.
 - Clearly directs users to the extension when page data must stay entirely local.
 
 ## Public site

@@ -25,7 +25,9 @@ SEOMarkup reports what exists in the rendered page. It does not claim search-eng
 
 ## Browser URL reports
 
-The landing page accepts one public URL and returns a source-only report in the current browser tab. The endpoint fetches up to 2 MB of HTML, follows only validated public redirects, blocks private/reserved networks and non-standard ports, and does not retain scan history. It does not execute page JavaScript or automatically load linked assets. Social preview images load only after an explicit click, directly from their source with no referrer. Rendered DOM and runtime tracker evidence still require the extension.
+The landing page accepts one public URL and returns a source-only report in the current browser tab. The endpoint fetches up to 2 MB of HTML, follows only validated public redirects, blocks private/reserved networks and non-standard ports, and does not retain scan history. It does not execute page JavaScript or load unrelated assets. The social-image option is checked by default, so opening the Social tab loads declared images directly from their source with no referrer. Uncheck it before inspection to keep images blocked until you click **Load preview images**.
+
+Each completed report gets a report-specific compressed URL-fragment link. The server neither receives nor stores that fragment, anyone with the link can read it, and restoring it does not fetch the inspected page again. Decoding stops if the report expands beyond 2 MB. Rendered DOM and runtime tracker evidence still require the extension.
 
 ## Privacy and permissions
 

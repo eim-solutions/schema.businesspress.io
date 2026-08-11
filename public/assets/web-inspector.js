@@ -15,12 +15,17 @@
   const reportStats = document.getElementById('reportStats');
   const reportTabs = document.getElementById('reportTabs');
   const reportPanel = document.getElementById('reportPanel');
+  const loadImagesOption = document.getElementById('loadPreviewImagesOption');
+  const shareButton = document.getElementById('shareWebReport');
   const copyButton = document.getElementById('copyWebReport');
   const exportButton = document.getElementById('exportWebReport');
+  const shareCodec = globalThis.SEOMarkupReportShare;
   let currentReport = null;
   let activePanel = 'overview';
+  let currentShareUrl = '';
 
   form.addEventListener('submit', inspectUrl);
+  if (shareButton) shareButton.addEventListener('click', copyShareLink);
   copyButton.addEventListener('click', copySummary);
   exportButton.addEventListener('click', exportReport);
   reportTabs.addEventListener('click', (event) => {
@@ -43,6 +48,7 @@
     tabs[next].focus();
     tabs[next].click();
   });
+  void restoreSharedReport();
 
   async function inspectUrl(event) {
     event.preventDefault();
@@ -56,6 +62,7 @@
     button.disabled = true;
     buttonLabel.textContent = 'Checking page…';
     workspace.hidden = true;
+    clearShareHash();
     showStatus('Fetching the page. We do not save it or the report.', 'loading');
 
     try {
@@ -86,12 +93,16 @@
       currentReport.limitations = [
         'This report checks source HTML, not the rendered page.',
         'Use the Chrome extension to find markup added by JavaScript and evidence from loaded resources.',
+        'Declared preview images load directly from their source only when you select that option or request them in the Social tab.',
         'These checks do not confirm search-engine feature eligibility.',
       ];
 
       renderReport();
-      showStatus('Check complete. Your report is ready below.', 'success');
       workspace.hidden = false;
+      const shareCreated = await createShareUrl();
+      showStatus(shareCreated
+        ? 'Check complete. Your report and share link are ready below.'
+        : 'Check complete. Your report is ready below. Download JSON if you need to share it.', 'success');
       workspace.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
     } catch (error) {
       currentReport = null;
@@ -104,17 +115,20 @@
 
   function renderReport() {
     const report = currentReport;
-    const url = safeUrl(report.page.url);
+    const url = safePublicUrl(report.page.url);
+    const shared = report.scan && report.scan.mode === 'Shared source report';
     reportTitle.textContent = report.page.title;
     reportUrl.textContent = report.page.url;
-    reportUrl.href = report.page.url;
-    reportMeta.textContent = `Source HTML · HTTP ${report.scan.status} · ${formatBytes(report.scan.bytes)} · Not saved`;
+    reportUrl.href = url ? url.href : '#';
+    reportMeta.textContent = shared
+      ? `Shared report · source HTTP ${report.scan.status} · ${formatBytes(report.scan.bytes)} · no new fetch`
+      : `Source HTML · HTTP ${report.scan.status} · ${formatBytes(report.scan.bytes)} · Not saved`;
 
     const stats = [
       [report.summary.schemaItems, 'Schema items'],
       [report.summary.needsAttention, 'Issues'],
       [report.summary.trackers, 'Trackers'],
-      [1, 'Page fetched'],
+      [shared ? 0 : 1, shared ? 'Pages fetched now' : 'Page fetched'],
     ];
     reportStats.replaceChildren(...stats.map(([value, label], index) => {
       const item = element('div', index === 3 ? 'browser-stat browser-stat-network' : 'browser-stat');
@@ -228,16 +242,24 @@
     const grid = element('div', 'web-social-preview-grid');
     previews.forEach((preview) => grid.append(socialPreviewCard(preview)));
 
-    if (previews.some((preview) => safePreviewImageUrl(preview.image))) {
+    const hasImages = previews.some((preview) => safePreviewImageUrl(preview.image));
+    const autoLoadImages = Boolean(loadImagesOption && loadImagesOption.checked);
+    if (hasImages) {
       const controls = element('div', 'web-social-load-control');
-      const copy = element('p', '', 'Images stay blocked until you choose to load them. Your browser requests the declared image URLs directly with no referrer.');
-      const loadButton = element('button', 'button button-secondary', 'Load preview images');
-      loadButton.type = 'button';
-      loadButton.addEventListener('click', () => loadPreviewImages(grid, loadButton));
-      controls.append(copy, loadButton);
+      const copy = element('p', '', autoLoadImages
+        ? 'Declared images are requested directly from their source with no referrer.'
+        : 'Images are blocked. Load them directly from their source with no referrer.');
+      controls.append(copy);
+      if (!autoLoadImages) {
+        const loadButton = element('button', 'button button-secondary', 'Load preview images');
+        loadButton.type = 'button';
+        loadButton.addEventListener('click', () => loadPreviewImages(grid, loadButton));
+        controls.append(loadButton);
+      }
       section.append(controls);
     }
     section.append(grid);
+    if (hasImages && autoLoadImages) loadPreviewImages(grid);
     reportPanel.append(section);
 
     const tags = reportSection('Declared social tags', 'Open Graph and X/Twitter tags found in the source HTML.');
@@ -292,23 +314,39 @@
     return card;
   }
 
-  function loadPreviewImages(grid, loadButton) {
-    grid.querySelectorAll('.web-preview-media[data-image-url]').forEach((media) => {
+  function loadPreviewImages(grid, loadButton = null) {
+    const mediaItems = [...grid.querySelectorAll('.web-preview-media[data-image-url]')].filter((media) => media.dataset.imageUrl);
+    let remaining = mediaItems.length;
+    let failed = 0;
+    if (loadButton) {
+      loadButton.disabled = true;
+      loadButton.textContent = 'Loading images…';
+    }
+
+    const finish = (didFail) => {
+      if (didFail) failed += 1;
+      remaining -= 1;
+      if (loadButton && remaining === 0) loadButton.textContent = failed ? 'Some images failed' : 'Images loaded';
+    };
+
+    mediaItems.forEach((media) => {
       const imageUrl = media.dataset.imageUrl;
-      if (!imageUrl) return;
       const image = document.createElement('img');
       image.alt = media.dataset.imageAlt || 'Declared social preview image';
       image.referrerPolicy = 'no-referrer';
-      image.addEventListener('load', () => media.classList.add('loaded'), { once: true });
+      image.addEventListener('load', () => {
+        media.classList.add('loaded');
+        finish(false);
+      }, { once: true });
       image.addEventListener('error', () => {
         media.replaceChildren(element('strong', '', 'Image could not be loaded'), element('span', '', imageUrl));
         media.classList.add('failed');
+        finish(true);
       }, { once: true });
       media.replaceChildren(image);
       image.src = imageUrl;
     });
-    loadButton.disabled = true;
-    loadButton.textContent = 'Images requested';
+    if (loadButton && mediaItems.length === 0) loadButton.textContent = 'No images declared';
   }
 
   function safePreviewImageUrl(value) {
@@ -397,6 +435,75 @@
     }
   }
 
+  async function createShareUrl() {
+    if (!currentReport || !shareCodec || !shareButton) return '';
+    try {
+      const token = await shareCodec.encodeReport(currentReport);
+      const url = new URL(location.href);
+      url.hash = `report=${token}`;
+      history.replaceState(null, '', url);
+      currentShareUrl = url.href;
+      shareButton.disabled = false;
+      return currentShareUrl;
+    } catch (error) {
+      currentShareUrl = '';
+      shareButton.disabled = true;
+      shareButton.textContent = 'Share unavailable';
+      return '';
+    }
+  }
+
+  async function copyShareLink() {
+    if (!currentReport || !shareButton) return;
+    const shareUrl = currentShareUrl || await createShareUrl();
+    if (!shareUrl) {
+      showStatus('This report is too large to share as a link. Download the JSON report instead.', 'error');
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      shareButton.textContent = 'Share link copied';
+      showStatus('Share link copied. Anyone with the link can read this report.', 'success');
+      setTimeout(() => { shareButton.textContent = 'Copy share link'; }, 1800);
+    } catch {
+      showStatus('Your browser blocked clipboard access. Copy the current address from the address bar.', 'error');
+    }
+  }
+
+  async function restoreSharedReport() {
+    const prefix = '#report=';
+    if (!location.hash.startsWith(prefix)) return;
+    if (!shareCodec) {
+      showStatus('This browser cannot open shared reports. Check the URL again to create a new report.', 'error');
+      return;
+    }
+    try {
+      currentReport = await shareCodec.decodeReport(location.hash.slice(prefix.length));
+      currentShareUrl = location.href;
+      activePanel = 'overview';
+      input.value = currentReport.page.url;
+      renderReport();
+      workspace.hidden = false;
+      if (shareButton) shareButton.disabled = false;
+      showStatus('Shared report loaded from this link. No page was fetched.', 'success');
+      workspace.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
+    } catch {
+      currentReport = null;
+      workspace.hidden = true;
+      showStatus('This share link is invalid or incomplete. Check a public URL to create a new report.', 'error');
+    }
+  }
+
+  function clearShareHash() {
+    currentShareUrl = '';
+    if (shareButton) {
+      shareButton.disabled = true;
+      shareButton.textContent = 'Copy share link';
+    }
+    if (!location.hash.startsWith('#report=')) return;
+    history.replaceState(null, '', `${location.pathname}${location.search}`);
+  }
+
   function exportReport() {
     if (!currentReport) return;
     const blob = new Blob([JSON.stringify(currentReport, null, 2)], { type: 'application/json' });
@@ -413,6 +520,11 @@
 
   function safeUrl(value) {
     try { return new URL(value); } catch { return null; }
+  }
+
+  function safePublicUrl(value) {
+    const url = safeUrl(value);
+    return url && ['http:', 'https:'].includes(url.protocol) && !url.username && !url.password ? url : null;
   }
 
   function formatBytes(bytes) {

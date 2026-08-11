@@ -153,6 +153,10 @@
             <input id="inspectionUrl" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="example.com/page" maxlength="2048" required>
             <button id="inspectUrlButton" type="submit"><svg class="ui-icon" aria-hidden="true"><use href="#icon-inspect"></use></svg><span id="inspectUrlButtonLabel">Check URL</span></button>
           </div>
+          <label class="image-load-option" for="loadPreviewImagesOption">
+            <input id="loadPreviewImagesOption" type="checkbox" checked>
+            <span><strong>Load declared social images</strong><small>Requested directly from their source with no referrer when you open the Social tab.</small></span>
+          </label>
         </form>
         <div class="fetch-receipt" aria-label="Website check privacy summary">
           <span><b>1</b> page fetched</span>
@@ -171,6 +175,7 @@
             <p id="reportMeta">Source HTML · not saved</p>
           </div>
           <div class="report-actions">
+            <button class="button button-secondary" id="shareWebReport" type="button" disabled>Copy share link</button>
             <button class="button button-secondary" id="copyWebReport" type="button">Copy summary</button>
             <button class="button button-primary" id="exportWebReport" type="button">Download JSON</button>
           </div>
@@ -311,7 +316,8 @@
       <ul>
         <li>Use Google Rich Results Test or Search Console to confirm rich-result eligibility.</li>
         <li>Some server-side, blocked, proxied or unfamiliar trackers may not appear.</li>
-        <li>Linked preview images load only when you ask. Canonical URLs and external vocabularies are not fetched.</li>
+        <li>Declared preview images load directly from their source only when you select that option or request them in the Social tab.</li>
+        <li>Share links contain a compressed report after the <code>#</code> in the URL. Anyone with the link can read it.</li>
         <li>Findings describe markup, not legal compliance, ranking impact or user intent.</li>
       </ul>
     </section>
@@ -332,6 +338,7 @@
     </nav>
   </footer>
   <script src="/assets/analyzer.js?v=0.2.0"></script>
-  <script src="/assets/web-inspector.js?v=0.2.1"></script>
+  <script src="/assets/report-share.js?v=0.1.0"></script>
+  <script src="/assets/web-inspector.js?v=0.3.0"></script>
 </body>
 </html>

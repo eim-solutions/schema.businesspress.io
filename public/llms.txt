@@ -15,7 +15,7 @@ SEOMarkup is a free, privacy-focused tool from BusinessPress for inspecting Sche
 - Tracking Pixel Checker: https://schema.businesspress.io/tracking-pixel-checker/
 - Privacy policy: https://schema.businesspress.io/privacy/
 
-The website accepts one user-submitted public HTTP or HTTPS URL. It fetches the source HTML once for the active report and does not keep application scan history. It blocks private, reserved, local, authenticated, non-standard-port, oversized and unsafe redirect targets. It does not run the target page's JavaScript.
+The website accepts one user-submitted public HTTP or HTTPS URL. It fetches the source HTML once for the active report and does not keep application scan history. It blocks private, reserved, local, authenticated, non-standard-port, oversized and unsafe redirect targets. It does not run the target page's JavaScript. The social-image option is checked by default, so opening the Social tab loads declared images directly from their source with no referrer; unchecking it before inspection keeps them blocked until the user requests them. Each completed report gets a report-specific compressed URL-fragment link. The server neither receives nor stores that fragment, anyone with the link can read it, and restoring it does not fetch the inspected page again. Decoding rejects payloads that expand beyond 2 MB.
 
 ## Use the Chrome extension
 

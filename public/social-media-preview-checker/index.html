@@ -104,6 +104,7 @@
         <form class="url-form" id="urlInspectorForm">
           <label for="inspectionUrl">Public page URL</label>
           <div class="url-control"><input id="inspectionUrl" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="example.com/page" maxlength="2048" required><button id="inspectUrlButton" type="submit"><span id="inspectUrlButtonLabel">Check URL</span></button></div>
+          <label class="image-load-option" for="loadPreviewImagesOption"><input id="loadPreviewImagesOption" type="checkbox" checked><span><strong>Load declared social images</strong><small>Requested directly from their source with no referrer when you open the Social tab.</small></span></label>
         </form>
         <div class="fetch-receipt" aria-label="Website check privacy summary"><span><b>1</b> page fetched</span><span><b>0</b> reports saved</span><span><b>0</b> analytics events</span></div>
         <p class="inspection-explainer">Your URL is sent to BusinessPress for this one-time source check. We do not save the page or report.</p>
@@ -114,7 +115,7 @@
       <section class="browser-report" id="browserReport" aria-labelledby="reportTitle" hidden>
         <header class="browser-report-header">
           <div><h2 id="reportTitle">Page title</h2><a id="reportUrl" href="https://example.com" target="_blank" rel="noopener noreferrer">https://example.com</a><p id="reportMeta">Source HTML · not saved</p></div>
-          <div class="report-actions"><button class="button button-secondary" id="copyWebReport" type="button">Copy summary</button><button class="button button-primary" id="exportWebReport" type="button">Download JSON</button></div>
+          <div class="report-actions"><button class="button button-secondary" id="shareWebReport" type="button" disabled>Copy share link</button><button class="button button-secondary" id="copyWebReport" type="button">Copy summary</button><button class="button button-primary" id="exportWebReport" type="button">Download JSON</button></div>
         </header>
         <div class="browser-stats" id="reportStats" aria-label="Page check summary"></div>
         <nav class="report-tabs" id="reportTabs" role="tablist" aria-label="Report sections">
@@ -137,6 +138,7 @@
   </main>
   <footer><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div><p>A private page-markup checker from BusinessPress.</p><nav aria-label="Footer navigation"><a href="/">All checks</a><a href="/sitemap/">Sitemap</a><a href="/privacy/">Privacy</a><a href="https://tools.businesspress.io/">BusinessPress Tools</a><a href="https://github.com/eim-solutions/schema.businesspress.io">GitHub</a></nav></footer>
   <script src="/assets/analyzer.js?v=0.2.0"></script>
-  <script src="/assets/web-inspector.js?v=0.2.1"></script>
+  <script src="/assets/report-share.js?v=0.1.0"></script>
+  <script src="/assets/web-inspector.js?v=0.3.0"></script>
 </body>
 </html>

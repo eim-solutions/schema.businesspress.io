@@ -52,10 +52,22 @@
         <li>The server fetches that page's source HTML and returns it to the active browser tab for analysis.</li>
         <li>SEOMarkup does not create an account, scan-history record, or saved report.</li>
         <li>Private-network addresses, login details, non-standard ports, oversized pages, and unsafe redirects are blocked.</li>
-        <li>The website does not execute the target page's JavaScript or automatically load linked assets.</li>
-        <li>Declared social preview images load only after you explicitly choose to load them, directly from their source without a referrer.</li>
+        <li>The website does not execute the target page's JavaScript or load unrelated assets.</li>
+        <li>The social-image option is checked by default. Opening the Social tab loads declared images directly from their source without a referrer.</li>
+        <li>If you uncheck the option before inspection, images stay blocked until you click <strong>Load preview images</strong>.</li>
       </ul>
       <p>Standard infrastructure logs may temporarily record technical request details such as IP address, the SEOMarkup endpoint path, browser user agent, response status, and timestamp for security and reliable delivery. The target URL is submitted in the request body rather than the endpoint path.</p>
+    </section>
+
+    <section>
+      <h2>Shared report links</h2>
+      <ul>
+        <li>A share link contains a compressed copy of the report after the <code>#</code> in the URL.</li>
+        <li>The browser does not send URL fragments to the SEOMarkup server, and SEOMarkup does not create a saved report record.</li>
+        <li>Anyone with the link can read the report. Do not share it if the inspected URL or report contains information you want to keep private.</li>
+        <li>Opening a shared report does not fetch the inspected page again.</li>
+        <li>SEOMarkup rejects a shared report if decoding expands it beyond 2 MB.</li>
+      </ul>
     </section>
 
     <section>
