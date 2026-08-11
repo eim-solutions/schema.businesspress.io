@@ -182,6 +182,10 @@ function escapeHtml(value) {
     .replaceAll('"', '&quot;');
 }
 
+function poweredByMarkup() {
+  return '<a class="powered-by" href="https://businesspress.io/?utm_source=seomarkup&amp;utm_medium=footer" target="_blank" rel="noopener noreferrer"><span>Powered by</span><img src="/assets/businesspress-logo.png" alt="BusinessPress — Professional Business Solutions" width="125" height="20" loading="lazy" decoding="async"></a>';
+}
+
 function structuredData(page) {
   return JSON.stringify({
     '@context': 'https://schema.org',
@@ -333,7 +337,7 @@ function renderPage(page) {
     <section class="seo-faq" aria-labelledby="faq-title"><h2 id="faq-title">Questions about ${escapeHtml(page.name.toLowerCase())}</h2><div>${page.faq.map(([question, answer]) => `<details><summary>${escapeHtml(question)}</summary><p>${escapeHtml(answer)}</p></details>`).join('')}</div></section>
     <section class="related-checkers" aria-labelledby="related-title"><h2 id="related-title">Related checks</h2><nav aria-label="Related SEOMarkup checkers">${related.map((item) => `<a href="/${item.slug}/"><span>${escapeHtml(item.name)}</span><small>${escapeHtml(item.description)}</small></a>`).join('')}</nav></section>
   </main>
-  <footer><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div><p>A private page-markup checker from BusinessPress.</p><nav aria-label="Footer navigation"><a href="/">All checks</a><a href="/sitemap/">Sitemap</a><a href="/privacy/">Privacy</a><a href="https://tools.businesspress.io/">BusinessPress Tools</a><a href="https://github.com/eim-solutions/schema.businesspress.io">GitHub</a></nav></footer>
+  <footer><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div>${poweredByMarkup()}<nav aria-label="Footer navigation"><a href="/">All checks</a><a href="/sitemap/">Sitemap</a><a href="/privacy/">Privacy</a><a href="https://tools.businesspress.io/">BusinessPress Tools</a><a href="https://github.com/eim-solutions/schema.businesspress.io">GitHub</a></nav></footer>
   <script src="/assets/analyzer.js?v=0.2.0"></script>
   <script src="/assets/report-share.js?v=0.1.0"></script>
   <script src="/assets/web-inspector.js?v=0.3.0"></script>
@@ -392,7 +396,7 @@ function renderHtmlSitemap() {
       </nav>
     </section>
   </main>
-  <footer><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div><p>A private page-markup checker from BusinessPress.</p><nav aria-label="Footer navigation"><a href="/">Product</a><a href="/sitemap/" aria-current="page">Sitemap</a><a href="/privacy/">Privacy</a><a href="https://tools.businesspress.io/">BusinessPress Tools</a></nav></footer>
+  <footer><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div>${poweredByMarkup()}<nav aria-label="Footer navigation"><a href="/">Product</a><a href="/sitemap/" aria-current="page">Sitemap</a><a href="/privacy/">Privacy</a><a href="https://tools.businesspress.io/">BusinessPress Tools</a></nav></footer>
 </body>
 </html>
 `;

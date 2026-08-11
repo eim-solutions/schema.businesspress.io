@@ -216,3 +216,15 @@ test('homepage links to every focused checker and BusinessPress Tools', () => {
   checkerSlugs.forEach((slug) => assert.match(home, new RegExp(`href="/${slug}/"`)));
   assert.match(home, /href="https:\/\/tools\.businesspress\.io\/"/);
 });
+
+test('credits BusinessPress consistently in every public footer', () => {
+  const htmlSitemap = fs.readFileSync(path.join(publicRoot, 'sitemap', 'index.html'), 'utf8');
+  const pages = [home, privacy, htmlSitemap, ...checkerPages.map(({ html }) => html)];
+
+  pages.forEach((html) => {
+    assert.match(html, /<footer>[\s\S]*class="powered-by"/);
+    assert.match(html, /href="https:\/\/businesspress\.io\/\?utm_source=seomarkup&amp;utm_medium=footer"/);
+    assert.match(html, /src="\/assets\/businesspress-logo\.png"/);
+  });
+  assert.equal(fs.existsSync(path.join(publicRoot, 'assets', 'businesspress-logo.png')), true);
+});
