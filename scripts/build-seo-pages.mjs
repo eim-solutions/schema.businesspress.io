@@ -303,7 +303,7 @@ function renderPage(page) {
   <meta name="twitter:title" content="${escapeHtml(page.name)} | SEOMarkup">
   <meta name="twitter:description" content="${escapeHtml(page.description)}">
   <meta name="twitter:image" content="${origin}/assets/seomarkup-og.png">
-  <link rel="stylesheet" href="/assets/site.css?v=0.3.1">
+  <link rel="stylesheet" href="/assets/site.css?v=0.3.2">
   <script type="application/ld+json">${structuredData(page)}</script>
 </head>
 <body class="seo-checker-page">
@@ -362,7 +362,7 @@ function renderHtmlSitemap() {
   <meta name="theme-color" content="#1447e6">
   <link rel="canonical" href="${origin}/sitemap/">
   <link rel="icon" href="/favicon.png" sizes="32x32">
-  <link rel="stylesheet" href="/assets/site.css?v=0.3.1">
+  <link rel="stylesheet" href="/assets/site.css?v=0.3.2">
   <script type="application/ld+json">${sitemapStructuredData()}</script>
 </head>
 <body class="sitemap-page">
