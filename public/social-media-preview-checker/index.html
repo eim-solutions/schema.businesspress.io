@@ -20,7 +20,8 @@
   <meta name="twitter:title" content="Social Media Preview Checker | SEOMarkup">
   <meta name="twitter:description" content="Preview how a public page may look when shared on Facebook, X/Twitter and LinkedIn, plus a Google-style search preview.">
   <meta name="twitter:image" content="https://schema.businesspress.io/assets/seomarkup-og.png">
-  <link rel="stylesheet" href="/assets/site.css?v=0.3.2">
+  <link rel="stylesheet" href="/assets/site.css?v=0.3.3">
+  <script defer src="/assets/analytics.js"></script>
   <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
@@ -98,7 +99,7 @@
       <div class="seo-checker-copy">
         <h1 id="page-title">Social Media Preview Checker</h1>
         <p>Check the titles, descriptions and images declared for social sharing. Compare platform previews before a campaign or page launch.</p>
-        <ul class="seo-proof-list"><li>Free to use</li><li>No account</li><li>No saved reports</li><li>No analytics</li></ul>
+        <ul class="seo-proof-list"><li>Free to use</li><li>No account</li><li>No saved reports</li><li>No analytics cookies</li></ul>
       </div>
       <div class="inspection-console seo-page-console" id="check">
         <form class="url-form" id="urlInspectorForm">
@@ -106,7 +107,7 @@
           <div class="url-control"><input id="inspectionUrl" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="example.com/page" maxlength="2048" required><button id="inspectUrlButton" type="submit"><span id="inspectUrlButtonLabel">Check URL</span></button></div>
           <label class="image-load-option" for="loadPreviewImagesOption"><input id="loadPreviewImagesOption" type="checkbox" checked><span><strong>Load declared social images</strong><small>Requested directly from their source with no referrer when you open the Social tab.</small></span></label>
         </form>
-        <div class="fetch-receipt" aria-label="Website check privacy summary"><span><b>1</b> page fetched</span><span><b>0</b> reports saved</span><span><b>0</b> analytics events</span></div>
+        <div class="fetch-receipt" aria-label="Website check privacy summary"><span><b>1</b> page fetched</span><span><b>0</b> reports saved</span></div>
         <p class="inspection-explainer">Your URL is sent to BusinessPress for this one-time source check. We do not save the page or report.</p>
         <p class="inspection-status" id="inspectionStatus" role="status" aria-live="polite">Enter a public URL to start.</p>
       </div>
@@ -136,7 +137,7 @@
     <section class="seo-faq" aria-labelledby="faq-title"><h2 id="faq-title">Questions about social media preview checker</h2><div><details><summary>Which platforms can I preview?</summary><p>The report includes Google, Facebook, X/Twitter and LinkedIn-style previews.</p></details><details><summary>Does checking a page load its social image?</summary><p>Not automatically. Preview images load only after you select the load-images control.</p></details><details><summary>Will the live post look exactly the same?</summary><p>Not always. Platforms apply their own cache, crop and display rules.</p></details></div></section>
     <section class="related-checkers" aria-labelledby="related-title"><h2 id="related-title">Related checks</h2><nav aria-label="Related SEOMarkup checkers"><a href="/open-graph-checker/"><span>Open Graph Checker</span><small>Check Open Graph tags from a public URL. Review og:title, og:description, og:image and og:url with Facebook and LinkedIn previews.</small></a><a href="/twitter-card-checker/"><span>Twitter Card Checker</span><small>Check Twitter Card metadata and preview X/Twitter link cards. Review card type, title, description and image from a public URL.</small></a><a href="/meta-tag-checker/"><span>Meta Tag Checker</span><small>Check SEO meta tags from a public URL, including title, description, canonical, robots, language, viewport, headings and social metadata.</small></a></nav></section>
   </main>
-  <footer><div class="footer-main"><div class="footer-product"><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div><p>Privacy-first schema and metadata inspection.</p></div><div class="footer-privacy" aria-label="Privacy assurances"><div class="privacy-seal"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 19 6v5c0 4.6-2.8 8-7 10-4.2-2-7-5.4-7-10V6l7-3Z"></path><path d="m9 12 2 2 4-4"></path></svg><span><strong>Privacy first</strong><small>GDPR-conscious by design</small></span></div><ul class="footer-promises"><li>No site analytics</li><li>No saved reports</li><li>Local extension checks</li></ul></div><nav aria-label="Footer navigation"><a href="/">All checks</a><a href="/sitemap/">Sitemap</a><a href="/privacy/">Privacy</a><a href="https://tools.businesspress.io/">BusinessPress Tools</a><a href="https://github.com/eim-solutions/schema.businesspress.io">GitHub</a></nav></div><div class="footer-bottom"><p>Public URL checks are one-time. Extension checks stay in your browser.</p><a class="powered-by" href="https://businesspress.io/?utm_source=seomarkup&amp;utm_medium=footer" target="_blank" rel="noopener noreferrer" aria-label="Powered by BusinessPress"><span>Powered by</span><img src="/assets/businesspress-logo.png" alt="" width="125" height="20" loading="lazy" decoding="async"></a></div></footer>
+  <footer><div class="footer-main"><div class="footer-product"><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div><p>Privacy-first schema and metadata inspection.</p></div><div class="footer-privacy" aria-label="Privacy assurances"><div class="privacy-seal"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 19 6v5c0 4.6-2.8 8-7 10-4.2-2-7-5.4-7-10V6l7-3Z"></path><path d="m9 12 2 2 4-4"></path></svg><span><strong>Privacy first</strong><small>GDPR-conscious by design</small></span></div><ul class="footer-promises"><li>Cookieless site analytics</li><li>No saved reports</li><li>Local extension checks</li></ul></div><nav aria-label="Footer navigation"><a href="/">All checks</a><a href="/sitemap/">Sitemap</a><a href="/privacy/">Privacy</a><a href="https://tools.businesspress.io/">BusinessPress Tools</a><a href="https://github.com/eim-solutions/schema.businesspress.io">GitHub</a></nav></div><div class="footer-bottom"><p>Public URL checks are one-time. Extension checks stay in your browser.</p><a class="powered-by" href="https://businesspress.io/?utm_source=seomarkup&amp;utm_medium=footer" target="_blank" rel="noopener noreferrer" aria-label="Powered by BusinessPress"><span>Powered by</span><img src="/assets/businesspress-logo.png" alt="" width="125" height="20" loading="lazy" decoding="async"></a></div></footer>
   <script src="/assets/analyzer.js?v=0.2.0"></script>
   <script src="/assets/report-share.js?v=0.1.0"></script>
   <script src="/assets/web-inspector.js?v=0.3.0"></script>

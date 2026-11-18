@@ -5,11 +5,13 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
+const vm = require('node:vm');
 
 const root = path.join(__dirname, '..');
 const publicRoot = path.join(root, 'public');
 const home = fs.readFileSync(path.join(publicRoot, 'index.html'), 'utf8');
 const privacy = fs.readFileSync(path.join(publicRoot, 'privacy', 'index.html'), 'utf8');
+const htmlSitemap = fs.readFileSync(path.join(publicRoot, 'sitemap', 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(publicRoot, 'assets', 'site.css'), 'utf8');
 const checkerSlugs = [
   'schema-markup-checker',
@@ -50,13 +52,60 @@ test('publishes valid SoftwareApplication JSON-LD without invented ratings', () 
   assert.equal('aggregateRating' in schema, false);
 });
 
-test('keeps the public site free of analytics and third-party page assets', () => {
-  const source = `${home}\n${privacy}`;
-  assert.doesNotMatch(source, /<script[^>]+src=["']https?:/i);
-  assert.doesNotMatch(source, /<(?:img|iframe)[^>]+src=["']https?:/i);
-  assert.doesNotMatch(source, /<link[^>]+rel=["']stylesheet["'][^>]+href=["']https?:/i);
-  assert.doesNotMatch(source, /\b(?:gtag|fbq|plausible|clarity|hj)\s*\(/i);
-  assert.doesNotMatch(source, /XMLHttpRequest|sendBeacon|WebSocket/);
+test('loads one Plausible entry point on each public page', () => {
+  const pages = [home, privacy, htmlSitemap, ...checkerPages.map(({ html }) => html)];
+  pages.forEach((html) => {
+    assert.equal([...html.matchAll(/<script defer src="\/assets\/analytics\.js"><\/script>/g)].length, 1);
+    assert.doesNotMatch(html, /<script[^>]+src=["']https?:/i);
+    assert.doesNotMatch(html, /<(?:img|iframe)[^>]+src=["']https?:/i);
+    assert.doesNotMatch(html, /<link[^>]+rel=["']stylesheet["'][^>]+href=["']https?:/i);
+    assert.doesNotMatch(html, /No site analytics|0<\/b> analytics events/i);
+  });
+  assert.match(privacy, /Plausible Analytics/);
+});
+
+test('sends a sanitized Plausible pageview only on the production site', () => {
+  const analytics = fs.readFileSync(path.join(publicRoot, 'assets', 'analytics.js'), 'utf8');
+  const scripts = [];
+  const calls = [];
+  const plausible = (name) => calls.push(name);
+  let options;
+  let load;
+  plausible.init = (settings) => { options = settings; };
+  const document = {
+    querySelector: () => ({ href: 'https://schema.businesspress.io/json-ld-validator/' }),
+    createElement: () => ({
+      addEventListener(event, callback) {
+        assert.equal(event, 'load');
+        load = callback;
+      },
+    }),
+    head: { append: (script) => scripts.push(script) },
+  };
+  const context = { URL, document, window: { plausible } };
+
+  vm.runInNewContext(analytics, { ...context, location: new URL('http://localhost:4174/') });
+  assert.equal(scripts.length, 0);
+
+  const location = new URL('https://schema.businesspress.io/json-ld-validator/?url=private#report=sample');
+  vm.runInNewContext(analytics, { ...context, location });
+  assert.equal(scripts.length, 1);
+  assert.match(scripts[0].src, /^https:\/\/stats\.businesspress\.io\/js\/pa-[\w-]+\.js$/);
+  assert.equal(scripts[0].referrerPolicy, 'no-referrer');
+  load();
+
+  assert.deepEqual(calls, ['pageview']);
+  assert.equal(options.autoCapturePageviews, false);
+  assert.equal(options.outboundLinks, false);
+  assert.equal(options.fileDownloads, false);
+  assert.equal(options.formSubmissions, false);
+  const event = { n: 'pageview', u: location.href, r: 'https://example.com/private?search=sample#anchor' };
+  assert.deepEqual({ ...options.transformRequest(event) }, {
+    n: 'pageview',
+    u: 'https://schema.businesspress.io/json-ld-validator/',
+    r: 'https://example.com',
+  });
+  assert.equal(options.transformRequest({ n: 'Form: Submission' }), null);
 });
 
 test('publishes the URL inspector and explicit server-fetch boundary', () => {
@@ -154,7 +203,7 @@ test('uses a local icon system and visible hero privacy checks', () => {
   assert.match(home, /id="inspectUrlButtonLabel">Check URL/);
   assert.match(home, /Free to use/);
   assert.match(home, /No account/);
-  assert.match(home, /No analytics/);
+  assert.match(home, /No analytics cookies/);
   assert.match(home, /No saved reports/);
   assert.doesNotMatch(home, /class="check-token">(?:\{ \}|Aa|↗|◎)/);
 });
@@ -162,7 +211,6 @@ test('uses a local icon system and visible hero privacy checks', () => {
 test('publishes robots and sitemap discovery', () => {
   const robots = fs.readFileSync(path.join(publicRoot, 'robots.txt'), 'utf8');
   const sitemap = fs.readFileSync(path.join(publicRoot, 'sitemap.xml'), 'utf8');
-  const htmlSitemap = fs.readFileSync(path.join(publicRoot, 'sitemap', 'index.html'), 'utf8');
   const llms = fs.readFileSync(path.join(publicRoot, 'llms.txt'), 'utf8');
 
   assert.match(robots, /Sitemap: https:\/\/schema\.businesspress\.io\/sitemap\.xml/);
@@ -218,7 +266,6 @@ test('homepage links to every focused checker and BusinessPress Tools', () => {
 });
 
 test('credits BusinessPress consistently in every public footer', () => {
-  const htmlSitemap = fs.readFileSync(path.join(publicRoot, 'sitemap', 'index.html'), 'utf8');
   const pages = [home, privacy, htmlSitemap, ...checkerPages.map(({ html }) => html)];
 
   pages.forEach((html) => {
@@ -228,7 +275,7 @@ test('credits BusinessPress consistently in every public footer', () => {
     assert.match(html, /src="\/assets\/businesspress-logo\.png" alt=""/);
     assert.match(html, /class="footer-privacy" aria-label="Privacy assurances"/);
     assert.match(html, /GDPR-conscious by design/);
-    assert.match(html, /No site analytics/);
+    assert.match(html, /Cookieless site analytics/);
     assert.match(html, /No saved reports/);
     assert.match(html, /Local extension checks/);
   });

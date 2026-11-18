@@ -187,7 +187,7 @@ function poweredByMarkup() {
 }
 
 function footerMarkup(navigation) {
-  return `<footer><div class="footer-main"><div class="footer-product"><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div><p>Privacy-first schema and metadata inspection.</p></div><div class="footer-privacy" aria-label="Privacy assurances"><div class="privacy-seal"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 19 6v5c0 4.6-2.8 8-7 10-4.2-2-7-5.4-7-10V6l7-3Z"></path><path d="m9 12 2 2 4-4"></path></svg><span><strong>Privacy first</strong><small>GDPR-conscious by design</small></span></div><ul class="footer-promises"><li>No site analytics</li><li>No saved reports</li><li>Local extension checks</li></ul></div><nav aria-label="Footer navigation">${navigation}</nav></div><div class="footer-bottom"><p>Public URL checks are one-time. Extension checks stay in your browser.</p>${poweredByMarkup()}</div></footer>`;
+  return `<footer><div class="footer-main"><div class="footer-product"><div class="brand footer-brand"><img src="/assets/icon.svg" width="28" height="28" alt=""><span>SEO<strong>Markup</strong></span></div><p>Privacy-first schema and metadata inspection.</p></div><div class="footer-privacy" aria-label="Privacy assurances"><div class="privacy-seal"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 19 6v5c0 4.6-2.8 8-7 10-4.2-2-7-5.4-7-10V6l7-3Z"></path><path d="m9 12 2 2 4-4"></path></svg><span><strong>Privacy first</strong><small>GDPR-conscious by design</small></span></div><ul class="footer-promises"><li>Cookieless site analytics</li><li>No saved reports</li><li>Local extension checks</li></ul></div><nav aria-label="Footer navigation">${navigation}</nav></div><div class="footer-bottom"><p>Public URL checks are one-time. Extension checks stay in your browser.</p>${poweredByMarkup()}</div></footer>`;
 }
 
 function structuredData(page) {
@@ -303,7 +303,8 @@ function renderPage(page) {
   <meta name="twitter:title" content="${escapeHtml(page.name)} | SEOMarkup">
   <meta name="twitter:description" content="${escapeHtml(page.description)}">
   <meta name="twitter:image" content="${origin}/assets/seomarkup-og.png">
-  <link rel="stylesheet" href="/assets/site.css?v=0.3.2">
+  <link rel="stylesheet" href="/assets/site.css?v=0.3.3">
+  <script defer src="/assets/analytics.js"></script>
   <script type="application/ld+json">${structuredData(page)}</script>
 </head>
 <body class="seo-checker-page">
@@ -318,7 +319,7 @@ function renderPage(page) {
       <div class="seo-checker-copy">
         <h1 id="page-title">${escapeHtml(page.name)}</h1>
         <p>${escapeHtml(page.intro)}</p>
-        <ul class="seo-proof-list"><li>Free to use</li><li>No account</li><li>No saved reports</li><li>No analytics</li></ul>
+        <ul class="seo-proof-list"><li>Free to use</li><li>No account</li><li>No saved reports</li><li>No analytics cookies</li></ul>
       </div>
       <div class="inspection-console seo-page-console" id="check">
         <form class="url-form" id="urlInspectorForm">
@@ -326,7 +327,7 @@ function renderPage(page) {
           <div class="url-control"><input id="inspectionUrl" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="example.com/page" maxlength="2048" required><button id="inspectUrlButton" type="submit"><span id="inspectUrlButtonLabel">Check URL</span></button></div>
           <label class="image-load-option" for="loadPreviewImagesOption"><input id="loadPreviewImagesOption" type="checkbox" checked><span><strong>Load declared social images</strong><small>Requested directly from their source with no referrer when you open the Social tab.</small></span></label>
         </form>
-        <div class="fetch-receipt" aria-label="Website check privacy summary"><span><b>1</b> page fetched</span><span><b>0</b> reports saved</span><span><b>0</b> analytics events</span></div>
+        <div class="fetch-receipt" aria-label="Website check privacy summary"><span><b>1</b> page fetched</span><span><b>0</b> reports saved</span></div>
         <p class="inspection-explainer">Your URL is sent to BusinessPress for this one-time source check. We do not save the page or report.</p>
         <p class="inspection-status" id="inspectionStatus" role="status" aria-live="polite">Enter a public URL to start.</p>
       </div>
@@ -362,7 +363,8 @@ function renderHtmlSitemap() {
   <meta name="theme-color" content="#1447e6">
   <link rel="canonical" href="${origin}/sitemap/">
   <link rel="icon" href="/favicon.png" sizes="32x32">
-  <link rel="stylesheet" href="/assets/site.css?v=0.3.2">
+  <link rel="stylesheet" href="/assets/site.css?v=0.3.3">
+  <script defer src="/assets/analytics.js"></script>
   <script type="application/ld+json">${sitemapStructuredData()}</script>
 </head>
 <body class="sitemap-page">

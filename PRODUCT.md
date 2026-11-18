@@ -33,4 +33,4 @@ SEOMarkup reports direct rendered-page evidence and clearly separates errors, wa
 
 ## Public site
 
-`schema.businesspress.io` provides the source inspector, explains the product, publishes the privacy statement, and serves the reviewed extension archive. The site itself contains no analytics or advertising pixels.
+`schema.businesspress.io` provides the source inspector, explains the product, publishes the privacy statement, and serves the reviewed extension archive. BusinessPress hosts cookieless Plausible analytics for public website visits and page engagement. Analytics uses canonical public page URLs and referrer origins and excludes all inspection inputs and results.

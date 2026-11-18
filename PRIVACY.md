@@ -16,4 +16,6 @@ The public website at `schema.businesspress.io` also offers a separate source-on
 
 Each completed report gets a report-specific share link containing a compressed report after the URL's `#`. Browsers do not send that fragment to the server, and SEOMarkup does not store it. Anyone with the link can read the report. Restoring it does not fetch the inspected page again, and decoding rejects reports that expand beyond 2 MB.
 
-The website contains no analytics, advertising pixels, account system, or contact form. Standard infrastructure logs may temporarily retain technical request details for security and reliable delivery. The target URL is in the POST body, not the endpoint path.
+BusinessPress hosts Plausible Analytics at `stats.businesspress.io` to measure website visits and page engagement without cookies. Analytics uses the public page address without query parameters or fragments and the referring site's origin. Plausible uses browser and network information to estimate unique visitors, device types, and approximate location. Analytics excludes submitted inspection URLs, inspected page content, form values, and shared report data.
+
+Standard infrastructure logs may temporarily retain technical request details for security and reliable delivery. The inspection URL is sent in the POST body.
